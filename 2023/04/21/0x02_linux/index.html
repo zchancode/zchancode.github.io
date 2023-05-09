@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+    <meta charset="utf-8">
+<meta name="renderer" content="webkit">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+
+
+    <link rel="dns-prefetch" //cdn.jsdelivr.net>
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdui@1.0.2/dist/css/mdui.min.css">
+
+
+
+    
+<link rel="stylesheet" href="/css/prism-m.css">
+
+    
+
+
+
+<meta name="theme-color" content="#3F51B5">
+
+
+<style>
+    html,body{scroll-behavior:smooth;min-height:100vh}
+    blockquote>strong>a{word-break:break-all}
+    .mdui-hoverable:hover,.mdui-hoverable:focus{-webkit-box-shadow:0 5px 5px -3px rgba(0,0,0,.2),0 8px 10px 1px rgba(0,0,0,.14),0 3px 14px 2px rgba(0,0,0,.12) !important;box-shadow:0 5px 5px -3px rgba(0,0,0,.2),0 8px 10px 1px rgba(0,0,0,.14),0 3px 14px 2px rgba(0,0,0,.12) !important;}
+    .mdui-card-primary-title a{text-decoration:none !important}
+    .page-number{display:none !important}
+    .mdui-container-fluid{transition:opacity .4s}
+    
+        body{background-color: #f6f6f6}
+
+    
+</style>
+    
+    <title>0x01_RTX1650Ti cuda11.2 cudnn8.1 tensorflow2.8.0 pytorch1.10.0 | Chan&#39;s blog</title>
+    <link rel="canonical" href="https://zchancode.github.io/2023/04/21/0x02_linux/">
+    <meta name="description" content="事实上答案就在题目里1.Ubuntu20.042.cuda11.23.cudnn8.14.tensorflow2.8.05.pytorch1.10.06.gcc&lt;107.python3.10版本对了就不怕检测不到你的GPU，裸机安装无需戴套">
+<meta property="og:type" content="article">
+<meta property="og:title" content="0x01_RTX1650Ti cuda11.2 cudnn8.1 tensorflow2.8.0 pytorch1.10.0">
+<meta property="og:url" content="https://zchancode.github.io/2023/04/21/0x02_linux/index.html">
+<meta property="og:site_name" content="Chan&#39;s blog">
+<meta property="og:description" content="事实上答案就在题目里1.Ubuntu20.042.cuda11.23.cudnn8.14.tensorflow2.8.05.pytorch1.10.06.gcc&lt;107.python3.10版本对了就不怕检测不到你的GPU，裸机安装无需戴套">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2023-04-21T07:09:00.000Z">
+<meta property="article:modified_time" content="2023-04-23T13:20:27.000Z">
+<meta property="article:author" content="Z Chan">
+<meta name="twitter:card" content="summary">
+<meta name="generator" content="Hexo 6.3.0"></head>
+<body class="mdui-theme-primary-indigo mdui-theme-accent-pink mdui-appbar-with-toolbar ">
+    <div class="mdui-theme-layout-light">
+    <header id="appbar" class="mdui-appbar mdui-appbar-fixed mdui-shadow-0 mdui-appbar-scroll-hide">
+    <div class="mdui-toolbar">
+        <button mdui-drawer="{target: '.mdui-drawer'}" class="mdui-btn mdui-btn-icon mdui-ripple"><i class="mdui-icon material-icons">menu</i></button>
+        <a href="/" class="mdui-typo-title">Chan&#39;s blog</a>
+        <div class="mdui-toolbar-spacer"></div>
+        
+        <a href="/search/" class="mdui-btn mdui-btn-icon mdui-ripple"><i class="mdui-icon material-icons">search</i></a>
+        
+    </div>
+</header>
+    <aside class="mdui-drawer mdui-drawer-close">
+    <nav class="mdui-list" mdui-collapse="{accordion: true}">
+        <a href="/about/"  class="mdui-list-item mdui-ripple">
+            <div class="mdui-list-item-avatar">
+                
+                <i class="mdui-color-theme-primary mdui-icon material-icons">person</i>
+                
+            </div>
+            <div class="mdui-list-item-content">Z Chan</div>
+        </a>
+        <div class="mdui-divider"></div>
+        
+        <a href="/" class="mdui-list-item mdui-ripple">
+            <i class="mdui-list-item-icon mdui-icon material-icons">home</i>
+            <div class="mdui-list-item-content">Home</div>
+        </a>
+        
+        <div class="mdui-collapse-item">
+            <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+                <i class="mdui-list-item-icon mdui-icon material-icons">inbox</i>
+                <div class="mdui-list-item-content">Archives</div>
+                <i class="mdui-collapse-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+            </div>
+            <div class="mdui-collapse-item-body mdui-list mdui-list-dense">
+                <a class="mdui-list-item mdui-ripple m-link" href="/archives/2023/05/">May 2023</a><a class="mdui-list-item mdui-ripple m-link" href="/archives/2023/04/">April 2023</a>
+            </div>
+        </div>
+        
+        <div class="mdui-collapse-item">
+            <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+                <i class="mdui-list-item-icon mdui-icon material-icons">apps</i>
+                <div class="mdui-list-item-content">Categories</div>
+                <i class="mdui-collapse-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+            </div>
+            <div class="mdui-collapse-item-body mdui-list mdui-list-dense">
+                <a class="mdui-list-item mdui-ripple m-link" href="/categories/Android%E5%B0%8F%E9%A1%B9%E7%9B%AE/">Android小项目</a><a class="mdui-list-item mdui-ripple m-link" href="/categories/Android%E5%B7%A5%E5%85%B7%E7%B1%BB/">Android工具类</a><a class="mdui-list-item mdui-ripple m-link" href="/categories/Android%E6%BA%90%E7%A0%81%E7%A0%94%E7%A9%B6/">Android源码研究</a><a class="mdui-list-item mdui-ripple m-link" href="/categories/Android%E7%8E%A9%E6%9C%BA/">Android玩机</a><a class="mdui-list-item mdui-ripple m-link" href="/categories/Hexo%E5%8D%9A%E5%AE%A2%E6%95%99%E7%A8%8B/">Hexo博客教程</a><a class="mdui-list-item mdui-ripple m-link" href="/categories/Linux/">Linux</a><a class="mdui-list-item mdui-ripple m-link" href="/categories/Youtube-Project/">Youtube Project</a><a class="mdui-list-item mdui-ripple m-link" href="/categories/%E5%AD%A6%E6%9C%AF%E8%AE%BA%E6%96%87/">学术论文</a><a class="mdui-list-item mdui-ripple m-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><a class="mdui-list-item mdui-ripple m-link" href="/categories/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89/">机器视觉</a><a class="mdui-list-item mdui-ripple m-link" href="/categories/%E8%87%AA%E5%88%B6%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">自制操作系统</a>
+            </div>
+        </div>
+        
+    </nav>
+    <div class="mdui-divider"></div>
+    <footer class="mdui-m-l-2 mdui-m-t-1 mdui-typo mdui-text-color-theme-disabled">
+        <p class="mdui-m-b-0">
+            
+            ©
+            2023 Z Chan<br>
+            
+            Powered by <a href="https://hexo.io/" rel="noreferrer" target="_blank">Hexo</a><br>
+            
+            Theme - <a href="https://github.com/kwaa/hexo-theme-m" rel="noreferrer" target="_blank"
+                mdui-tooltip="{position:'right', content: 'by 藍+85CD'}">M</a></p>
+            
+    </footer>
+</aside>
+    </div>
+    <div class="mdui-container-fluid mdui-center" style="max-width:720px">
+        <article class="mdui-card mdui-hoverable mdui-shadow-1 mdui-m-y-2" style="opacity: 1; border-radius: 4px">
+    
+    <div class="mdui-card-primary mdui-ripple">
+    <div class="mdui-card-primary-title">
+        <a role="heading" aria-level="1" class="mdui-text-color-theme-text" >0x01_RTX1650Ti cuda11.2 cudnn8.1 tensorflow2.8.0 pytorch1.10.0</a>
+        
+        <small> <a class="mdui-text-color-theme-text category-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a></small>
+        
+    </div>
+    <div class="mdui-card-primary-subtitle mdui-typo">
+        
+        <span mdui-tooltip="{content:'Created: 2023-04-21 03:09<br>Updated: 2023-04-23 09:20'}">2023-04-21 -</span>
+        
+            <span>2023/04/21/0x02_linux/</span>
+        
+    </div>
+</div>
+    
+    
+    <div class="mdui-divider"></div>
+    <div class="mdui-card-content mdui-typo">
+        
+        <p>事实上答案就在题目里<br>1.Ubuntu20.04<br>2.cuda11.2<br>3.cudnn8.1<br>4.tensorflow2.8.0<br>5.pytorch1.10.0<br>6.gcc&lt;10<br>7.python3.10<br>版本对了就不怕检测不到你的GPU，裸机安装无需戴套</p>
+<span id="more"></span>
+<h5 id="cuda11-2"><a href="#cuda11-2" class="headerlink" title="cuda11.2"></a>cuda11.2</h5><pre class="line-numbers language-none"><code class="language-none">https:&#x2F;&#x2F;developer.nvidia.com&#x2F;cuda-11.2.0-download-archive?target_os&#x3D;Linux&amp;target_arch&#x3D;x86_64&amp;target_distro&#x3D;Ubuntu&amp;target_version&#x3D;2004&amp;target_type&#x3D;runfilelocal<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">wget</span> https://developer.download.nvidia.com/compute/cuda/11.2.0/local_installers/cuda_11.2.0_460.27.04_linux.run
+<span class="token function">sudo</span> <span class="token function">sh</span> cuda_11.2.0_460.27.04_linux.run<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>安装的时候你可以根据自己的情况选择要不要安装显卡驱动，其他都勾上</p>
+<h5 id="设置环境变量"><a href="#设置环境变量" class="headerlink" title="设置环境变量"></a>设置环境变量</h5><p>他这个装到了&#x2F;usr&#x2F;local&#x2F;cuda里要增加环境变量，不然系统读不出来<br>编辑 <code>nano ~/.bashrc</code></p>
+<pre class="line-numbers language-none"><code class="language-none">export LD_LIBRARY_PATH&#x3D;$LD_LIBRARY_PATH:&#x2F;usr&#x2F;local&#x2F;cuda-11.2&#x2F;lib64
+export PATH&#x3D;$PATH:&#x2F;usr&#x2F;local&#x2F;cuda-11.2&#x2F;bin
+export CUDA_HOME&#x3D;$CUDA_HOME:&#x2F;usr&#x2F;local&#x2F;cuda-11.2&#96;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>生效<code>source ~/.bashrc</code></p>
+<h5 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h5><p><code>nvcc -V</code></p>
+<h5 id="cudnn8-1-for-cuda11-2"><a href="#cudnn8-1-for-cuda11-2" class="headerlink" title="cudnn8.1 for cuda11.2"></a>cudnn8.1 for cuda11.2</h5><pre class="line-numbers language-none"><code class="language-none">https:&#x2F;&#x2F;developer.nvidia.com&#x2F;rdp&#x2F;cudnn-archive<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>找三个deb x86_64</p>
+<pre class="line-numbers language-none"><code class="language-none">#依次安装
+sudo dpkg -i libcudnn8_8.1.1.33-1+cuda11.2_amd64.deb
+#运行库
+sudo dpkg -i libcudnn8-dev_8.1.1.33-1+cuda11.2_amd64.deb
+#开发库
+sudo dpkg -i libcudnn8-samples_8.1.1.33-1+cuda11.2_amd64.deb
+#demo库<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h5 id="验证cudnn"><a href="#验证cudnn" class="headerlink" title="验证cudnn"></a>验证cudnn</h5><p>验证cuDNN可用</p>
+<pre class="line-numbers language-none"><code class="language-none"># 将cuDNN例子复制到可写路径中
+cp -r &#x2F;usr&#x2F;src&#x2F;cudnn_samples_v8&#x2F; $HOME
+# 转到可写路径
+cd  ~&#x2F;cudnn_samples_v8&#x2F;mnistCUDNN
+# 编译文件。
+sudo make clean 
+sudo make
+# 运行样例程序。
+sudo .&#x2F;mnistCUDNN<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>如果报错说缺什么h文件，说明还要装两个依赖，你搜一下这个报错就可以搜到,如果再说gcc版本有问题你就要切换gcc版本</p>
+<h5 id="安装pytroch1-10-0"><a href="#安装pytroch1-10-0" class="headerlink" title="安装pytroch1.10.0"></a>安装pytroch1.10.0</h5><p>看准版本，去官网找命令，网上的都会过期</p>
+<pre class="line-numbers language-none"><code class="language-none">https:&#x2F;&#x2F;pytorch.org&#x2F;get-started&#x2F;previous-versions&#x2F;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<pre class="line-numbers language-none"><code class="language-none">pip install torch&#x3D;&#x3D;1.10.0+cu111 torchvision&#x3D;&#x3D;0.11.0+cu111 torchaudio&#x3D;&#x3D;0.10.0 -f https:&#x2F;&#x2F;download.pytorch.org&#x2F;whl&#x2F;torch_stable.html<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>虽然上面提示是对cuda11.1的但是我试了，可以正常用</p>
+<h5 id="tensorflow2-8-0"><a href="#tensorflow2-8-0" class="headerlink" title="tensorflow2.8.0"></a>tensorflow2.8.0</h5><pre class="line-numbers language-none"><code class="language-none">pip install tensorflow&#x3D;&#x3D;2.8.0<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>如果不行就是</p>
+<pre class="line-numbers language-none"><code class="language-none">pip install tensorflow-gpu&#x3D;&#x3D;2.8.0<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h5 id="测试是否安装成功"><a href="#测试是否安装成功" class="headerlink" title="测试是否安装成功"></a>测试是否安装成功</h5><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> torch   <span class="token comment"># 能否调用pytorch库</span>
+
+<span class="token keyword">print</span><span class="token punctuation">(</span>torch<span class="token punctuation">.</span>cuda<span class="token punctuation">.</span>current_device<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>   <span class="token comment"># 输出当前设备（我只有一个GPU为0）</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>torch<span class="token punctuation">.</span>cuda<span class="token punctuation">.</span>device<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span>   <span class="token comment"># &lt;torch.cuda.device object at 0x7fdfb60aa588></span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>torch<span class="token punctuation">.</span>cuda<span class="token punctuation">.</span>device_count<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>  <span class="token comment"># 输出含有的GPU数目</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>torch<span class="token punctuation">.</span>cuda<span class="token punctuation">.</span>get_device_name<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span>  <span class="token comment"># 输出GPU名称 --比如1080Ti</span>
+x <span class="token operator">=</span> torch<span class="token punctuation">.</span>rand<span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span>  <span class="token comment"># 输出一个5 x 3 的tenor(张量)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> tensorflow <span class="token keyword">as</span> tf
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'GPU'</span><span class="token punctuation">,</span>tf<span class="token punctuation">.</span>test<span class="token punctuation">.</span>is_gpu_available<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+a <span class="token operator">=</span> tf<span class="token punctuation">.</span>constant<span class="token punctuation">(</span><span class="token number">2.</span><span class="token punctuation">)</span>
+b <span class="token operator">=</span> tf<span class="token punctuation">.</span>constant<span class="token punctuation">(</span><span class="token number">4.</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>a <span class="token operator">*</span> b<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+        <blockquote class="mdui-m-x-0 mdui-m-t-4">
+    <strong>
+        Author: <a href="/about/">Z Chan</a><br>
+        URL: <a href="https://zchancode.github.io/2023/04/21/0x02_linux/">https://zchancode.github.io/2023/04/21/0x02_linux/</a><br>
+        
+            This work is licensed under a <a rel="license noopener" target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> .
+        
+    </strong>
+</blockquote>
+        
+    </div>
+    
+</article>
+<nav class="mdui-theme-layout-light mdui-color-transparent mdui-row mdui-m-b-2">
+    
+        <div class="mdui-col-xs-12 mdui-m-b-2">
+            <a class="extend prev mdui-btn mdui-ripple mdui-float-left mdui-text-truncate" rel="prev"
+                style="max-width: 100%" href="/2023/04/22/0x01_visual/">
+                <i class="mdui-icon mdui-icon-left material-icons">arrow_back</i>0x01_Android使用Ceres1.14
+            </a>
+        </div>
+    
+        <div class="mdui-col-xs-12">
+            <a class="extend next mdui-btn mdui-ripple mdui-float-right mdui-text-truncate" rel="next"
+                style="max-width: 100%" href="/2023/04/20/0x01_linux/">
+                <i class="mdui-icon mdui-icon-right material-icons">arrow_forward</i>0x01_Gparted调整磁盘大小
+            </a>
+        </div>
+    
+</nav>
+
+    </div>
+    <a href="#" class="mdui-fab mdui-fab-fixed mdui-hidden-xs mdui-color-theme-accent mdui-ripple"><i class="mdui-icon material-icons">keyboard_arrow_up</i></a>
+
+<script src="https://cdn.jsdelivr.net/npm/mdui@1.0.2/dist/js/mdui.min.js"></script>
+
+
+<script>
+    var $ = mdui.$;
+    function init(){
+        //
+    }
+    window.addEventListener("load", () => {
+        //
+        init()
+    }, {once: true});
+</script>
+
+</body>
+</html>

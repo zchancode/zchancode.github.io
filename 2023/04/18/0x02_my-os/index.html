@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+    <meta charset="utf-8">
+<meta name="renderer" content="webkit">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+
+
+    <link rel="dns-prefetch" //cdn.jsdelivr.net>
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdui@1.0.2/dist/css/mdui.min.css">
+
+
+
+    
+<link rel="stylesheet" href="/css/prism-m.css">
+
+    
+
+
+
+<meta name="theme-color" content="#3F51B5">
+
+
+<style>
+    html,body{scroll-behavior:smooth;min-height:100vh}
+    blockquote>strong>a{word-break:break-all}
+    .mdui-hoverable:hover,.mdui-hoverable:focus{-webkit-box-shadow:0 5px 5px -3px rgba(0,0,0,.2),0 8px 10px 1px rgba(0,0,0,.14),0 3px 14px 2px rgba(0,0,0,.12) !important;box-shadow:0 5px 5px -3px rgba(0,0,0,.2),0 8px 10px 1px rgba(0,0,0,.14),0 3px 14px 2px rgba(0,0,0,.12) !important;}
+    .mdui-card-primary-title a{text-decoration:none !important}
+    .page-number{display:none !important}
+    .mdui-container-fluid{transition:opacity .4s}
+    
+        body{background-color: #f6f6f6}
+
+    
+</style>
+    
+    <title>0x02_我的第一个操作系统My-OS | Chan&#39;s blog</title>
+    <link rel="canonical" href="https://zchancode.github.io/2023/04/18/0x02_my-os/">
+    <meta name="description" content="首先配置环境见目录0x00，创建class01文件夹 直接看目录结构">
+<meta property="og:type" content="article">
+<meta property="og:title" content="0x02_我的第一个操作系统My-OS">
+<meta property="og:url" content="https://zchancode.github.io/2023/04/18/0x02_my-os/index.html">
+<meta property="og:site_name" content="Chan&#39;s blog">
+<meta property="og:description" content="首先配置环境见目录0x00，创建class01文件夹 直接看目录结构">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://zchancode.github.io/images/os01.png">
+<meta property="article:published_time" content="2023-04-18T14:38:00.000Z">
+<meta property="article:modified_time" content="2023-04-19T03:33:15.000Z">
+<meta property="article:author" content="Z Chan">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://zchancode.github.io/images/os01.png">
+<meta name="generator" content="Hexo 6.3.0"></head>
+<body class="mdui-theme-primary-indigo mdui-theme-accent-pink mdui-appbar-with-toolbar ">
+    <div class="mdui-theme-layout-light">
+    <header id="appbar" class="mdui-appbar mdui-appbar-fixed mdui-shadow-0 mdui-appbar-scroll-hide">
+    <div class="mdui-toolbar">
+        <button mdui-drawer="{target: '.mdui-drawer'}" class="mdui-btn mdui-btn-icon mdui-ripple"><i class="mdui-icon material-icons">menu</i></button>
+        <a href="/" class="mdui-typo-title">Chan&#39;s blog</a>
+        <div class="mdui-toolbar-spacer"></div>
+        
+        <a href="/search/" class="mdui-btn mdui-btn-icon mdui-ripple"><i class="mdui-icon material-icons">search</i></a>
+        
+    </div>
+</header>
+    <aside class="mdui-drawer mdui-drawer-close">
+    <nav class="mdui-list" mdui-collapse="{accordion: true}">
+        <a href="/about/"  class="mdui-list-item mdui-ripple">
+            <div class="mdui-list-item-avatar">
+                
+                <i class="mdui-color-theme-primary mdui-icon material-icons">person</i>
+                
+            </div>
+            <div class="mdui-list-item-content">Z Chan</div>
+        </a>
+        <div class="mdui-divider"></div>
+        
+        <a href="/" class="mdui-list-item mdui-ripple">
+            <i class="mdui-list-item-icon mdui-icon material-icons">home</i>
+            <div class="mdui-list-item-content">Home</div>
+        </a>
+        
+        <div class="mdui-collapse-item">
+            <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+                <i class="mdui-list-item-icon mdui-icon material-icons">inbox</i>
+                <div class="mdui-list-item-content">Archives</div>
+                <i class="mdui-collapse-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+            </div>
+            <div class="mdui-collapse-item-body mdui-list mdui-list-dense">
+                <a class="mdui-list-item mdui-ripple m-link" href="/archives/2023/05/">May 2023</a><a class="mdui-list-item mdui-ripple m-link" href="/archives/2023/04/">April 2023</a>
+            </div>
+        </div>
+        
+        <div class="mdui-collapse-item">
+            <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+                <i class="mdui-list-item-icon mdui-icon material-icons">apps</i>
+                <div class="mdui-list-item-content">Categories</div>
+                <i class="mdui-collapse-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+            </div>
+            <div class="mdui-collapse-item-body mdui-list mdui-list-dense">
+                <a class="mdui-list-item mdui-ripple m-link" href="/categories/Android%E5%B0%8F%E9%A1%B9%E7%9B%AE/">Android小项目</a><a class="mdui-list-item mdui-ripple m-link" href="/categories/Android%E5%B7%A5%E5%85%B7%E7%B1%BB/">Android工具类</a><a class="mdui-list-item mdui-ripple m-link" href="/categories/Android%E6%BA%90%E7%A0%81%E7%A0%94%E7%A9%B6/">Android源码研究</a><a class="mdui-list-item mdui-ripple m-link" href="/categories/Android%E7%8E%A9%E6%9C%BA/">Android玩机</a><a class="mdui-list-item mdui-ripple m-link" href="/categories/Hexo%E5%8D%9A%E5%AE%A2%E6%95%99%E7%A8%8B/">Hexo博客教程</a><a class="mdui-list-item mdui-ripple m-link" href="/categories/Linux/">Linux</a><a class="mdui-list-item mdui-ripple m-link" href="/categories/Youtube-Project/">Youtube Project</a><a class="mdui-list-item mdui-ripple m-link" href="/categories/%E5%AD%A6%E6%9C%AF%E8%AE%BA%E6%96%87/">学术论文</a><a class="mdui-list-item mdui-ripple m-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><a class="mdui-list-item mdui-ripple m-link" href="/categories/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89/">机器视觉</a><a class="mdui-list-item mdui-ripple m-link" href="/categories/%E8%87%AA%E5%88%B6%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">自制操作系统</a>
+            </div>
+        </div>
+        
+    </nav>
+    <div class="mdui-divider"></div>
+    <footer class="mdui-m-l-2 mdui-m-t-1 mdui-typo mdui-text-color-theme-disabled">
+        <p class="mdui-m-b-0">
+            
+            ©
+            2023 Z Chan<br>
+            
+            Powered by <a href="https://hexo.io/" rel="noreferrer" target="_blank">Hexo</a><br>
+            
+            Theme - <a href="https://github.com/kwaa/hexo-theme-m" rel="noreferrer" target="_blank"
+                mdui-tooltip="{position:'right', content: 'by 藍+85CD'}">M</a></p>
+            
+    </footer>
+</aside>
+    </div>
+    <div class="mdui-container-fluid mdui-center" style="max-width:720px">
+        <article class="mdui-card mdui-hoverable mdui-shadow-1 mdui-m-y-2" style="opacity: 1; border-radius: 4px">
+    
+    <div class="mdui-card-primary mdui-ripple">
+    <div class="mdui-card-primary-title">
+        <a role="heading" aria-level="1" class="mdui-text-color-theme-text" >0x02_我的第一个操作系统My-OS</a>
+        
+        <small> <a class="mdui-text-color-theme-text category-link" href="/categories/%E8%87%AA%E5%88%B6%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">自制操作系统</a></small>
+        
+    </div>
+    <div class="mdui-card-primary-subtitle mdui-typo">
+        
+        <span mdui-tooltip="{content:'Created: 2023-04-18 10:38<br>Updated: 2023-04-19 11:33'}">2023-04-18 -</span>
+        
+            <span>2023/04/18/0x02_my-os/</span>
+        
+    </div>
+</div>
+    
+    
+    <div class="mdui-divider"></div>
+    <div class="mdui-card-content mdui-typo">
+        
+        <p>首先配置环境见目录0x00，创建class01文件夹</p>
+<p>直接看目录结构</p>
+<span id="more"></span>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">
+│ main.c（可以调用asm的函数，可以使用最原始的c语言，要明白基本所有头文件都要用汇编自己造）
+│ Makefile（make脚本）
+├─asm
+│ 　　 asmhead.asm（别管）
+│ 　　 ipl10.asm（别管）
+│ 　　 naskfunc.asm（这里用来写asm函数）
+└─include
+　　　 head.h（关联asm和c的头文件，c就可以调用asm的函数）<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>下面我们来实现显示功能</p>
+<h5 id="naskfunc-asm"><a href="#naskfunc-asm" class="headerlink" title="naskfunc.asm"></a>naskfunc.asm</h5><pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token punctuation">;</span> naskfunc
+<span class="token punctuation">;</span> <span class="token constant">TAB</span><span class="token operator">=</span><span class="token number">4</span>
+
+<span class="token punctuation">[</span><span class="token constant">FORMAT</span> <span class="token string">"WCOFF"</span><span class="token punctuation">]</span>                <span class="token punctuation">;</span> 制作目标文件的模式    
+<span class="token punctuation">[</span><span class="token constant">INSTRSET</span> <span class="token string">"i486p"</span><span class="token punctuation">]</span>              <span class="token punctuation">;</span> 使用到<span class="token number">486</span>为止的指令
+<span class="token punctuation">[</span><span class="token constant">BITS</span> <span class="token number">32</span><span class="token punctuation">]</span>                       <span class="token punctuation">;</span> <span class="token number">3</span>制作<span class="token number">32</span>位模式用的机器语言
+<span class="token punctuation">[</span><span class="token constant">FILE</span> <span class="token string">"naskfunc.asm"</span><span class="token punctuation">]</span>           <span class="token punctuation">;</span> 文件名
+    <span class="token class-name">GLOBAL</span>    _io_hlt<span class="token punctuation">,</span>_write_mem8
+        
+
+<span class="token punctuation">[</span><span class="token constant">SECTION</span> <span class="token punctuation">.</span>text<span class="token punctuation">]</span>
+
+_io_hlt<span class="token operator">:</span>    <span class="token punctuation">;</span> <span class="token keyword">void</span> <span class="token function">io_hlt</span><span class="token punctuation">(</span><span class="token keyword">void</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token constant">HLT</span>
+    <span class="token constant">RET</span>
+
+_write_mem8<span class="token operator">:</span> <span class="token punctuation">;</span> <span class="token keyword">void</span> <span class="token function">write_mem8</span><span class="token punctuation">(</span><span class="token keyword">int</span> addr<span class="token punctuation">,</span> <span class="token keyword">int</span> data<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token class-name">MOV</span> <span class="token constant">ECX</span><span class="token punctuation">,</span><span class="token punctuation">[</span><span class="token constant">ESP</span><span class="token operator">+</span><span class="token number">4</span><span class="token punctuation">]</span> <span class="token punctuation">;</span> taking content of add
+    <span class="token class-name">MOV</span> <span class="token constant">AL</span><span class="token punctuation">,</span><span class="token punctuation">[</span><span class="token constant">ESP</span><span class="token operator">+</span><span class="token number">8</span><span class="token punctuation">]</span> <span class="token punctuation">;</span> taking content of data
+    <span class="token constant">MOV</span> <span class="token punctuation">[</span><span class="token constant">ECX</span><span class="token punctuation">]</span><span class="token punctuation">,</span><span class="token constant">AL</span> <span class="token punctuation">;</span> <span class="token operator">*</span>ecx<span class="token operator">=</span>al
+    <span class="token constant">RET</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>GLOBAL 这里 和 两个函数这里是关键，_io_hlt函数就是休眠cpu的，_是必须要的，这个没有链接不到c语言的函数</p>
+<p>_write_mem8用来在指定内存地址写内容的，有两个参数，第一个是地址，第二个是数据，都是int</p>
+<h5 id="head-h"><a href="#head-h" class="headerlink" title="head.h"></a>head.h</h5><pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token keyword">void</span> <span class="token function">io_hlt</span><span class="token punctuation">(</span><span class="token keyword">void</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">void</span> <span class="token function">write_mem8</span><span class="token punctuation">(</span><span class="token keyword">int</span> addr<span class="token punctuation">,</span> <span class="token keyword">int</span> data<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h5 id="main-c"><a href="#main-c" class="headerlink" title="main.c"></a>main.c</h5><pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">"include/head.h"</span></span>
+
+<span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token keyword">void</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+    <span class="token keyword">int</span> i<span class="token punctuation">;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span>i <span class="token operator">=</span> <span class="token number">0xa0000</span><span class="token punctuation">;</span> i <span class="token operator">&lt;=</span> <span class="token number">0xaffff</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token function">write_mem8</span><span class="token punctuation">(</span>i<span class="token punctuation">,</span> <span class="token number">12</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">/* MOV BYTE [i],15 */</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token punctuation">;</span><span class="token punctuation">;</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token function">io_hlt</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>就是把12（红色）用循环写入显存，每个像素点怎么显示都要看对应的显存地址，比如0xa0000到0xaffff就是每一个像素点的显存</p>
+<p>你问为什么12就是红色，这些东西在主板出厂的时候就是规定好的，就是有点调用主板api的味道</p>
+<h5 id="makefile"><a href="#makefile" class="headerlink" title="makefile"></a>makefile</h5><pre class="line-numbers language-makefile" data-language="makefile"><code class="language-makefile"><span class="token builtin-target builtin">.PHONY</span><span class="token punctuation">:</span>appcations
+
+TOOLPATH <span class="token operator">=</span> ../z_tools/
+INCPATH  <span class="token operator">=</span> ../z_tools/haribote/
+ASMPATH <span class="token operator">=</span> ./asm/
+MAKE     <span class="token operator">=</span> <span class="token variable">$</span><span class="token punctuation">(</span>TOOLPATH<span class="token punctuation">)</span>make.exe -r
+NASK     <span class="token operator">=</span> <span class="token variable">$</span><span class="token punctuation">(</span>TOOLPATH<span class="token punctuation">)</span>nask.exe
+CC1      <span class="token operator">=</span> <span class="token variable">$</span><span class="token punctuation">(</span>TOOLPATH<span class="token punctuation">)</span>cc1.exe -I<span class="token variable">$</span><span class="token punctuation">(</span>INCPATH<span class="token punctuation">)</span> -Os -Wall -quiet
+GAS2NASK <span class="token operator">=</span> <span class="token variable">$</span><span class="token punctuation">(</span>TOOLPATH<span class="token punctuation">)</span>gas2nask.exe -a
+OBJ2BIM  <span class="token operator">=</span> <span class="token variable">$</span><span class="token punctuation">(</span>TOOLPATH<span class="token punctuation">)</span>obj2bim.exe
+OBJS_MAIN <span class="token operator">=</span> main.obj naskfunc.obj
+FONTPATH <span class="token operator">=</span> ./font/
+MAKEFONT <span class="token operator">=</span> <span class="token variable">$</span><span class="token punctuation">(</span>TOOLPATH<span class="token punctuation">)</span>makefont.exe
+BIN2OBJ  <span class="token operator">=</span> <span class="token variable">$</span><span class="token punctuation">(</span>TOOLPATH<span class="token punctuation">)</span>bin2obj.exe
+
+
+BIM2HRB  <span class="token operator">=</span> <span class="token variable">$</span><span class="token punctuation">(</span>TOOLPATH<span class="token punctuation">)</span>bim2hrb.exe
+RULEFILE <span class="token operator">=</span> <span class="token variable">$</span><span class="token punctuation">(</span>TOOLPATH<span class="token punctuation">)</span>haribote/haribote.rul
+EDIMG    <span class="token operator">=</span> <span class="token variable">$</span><span class="token punctuation">(</span>TOOLPATH<span class="token punctuation">)</span>edimg.exe
+IMGTOL   <span class="token operator">=</span> <span class="token variable">$</span><span class="token punctuation">(</span>TOOLPATH<span class="token punctuation">)</span>imgtol.com
+COPY     <span class="token operator">=</span> copy
+DEL      <span class="token operator">=</span> del
+
+<span class="token comment"># 默认动作</span>
+
+
+<span class="token target symbol">%.gas</span> <span class="token punctuation">:</span> %.c Makefile
+    <span class="token variable">$</span><span class="token punctuation">(</span>CC1<span class="token punctuation">)</span> -o <span class="token variable">$*.gas</span> <span class="token variable">$*.c</span>
+
+<span class="token target symbol">%.asm</span> <span class="token punctuation">:</span> %.gas Makefile
+    <span class="token variable">$</span><span class="token punctuation">(</span>GAS2NASK<span class="token punctuation">)</span> <span class="token variable">$*.gas</span> <span class="token variable">$*.asm</span>
+
+<span class="token target symbol">%.obj</span> <span class="token punctuation">:</span> %.asm Makefile
+    <span class="token variable">$</span><span class="token punctuation">(</span>NASK<span class="token punctuation">)</span> <span class="token variable">$*.asm</span> <span class="token variable">$*.obj</span>
+
+
+
+<span class="token target symbol">naskfunc.obj</span> <span class="token punctuation">:</span> <span class="token variable">$</span><span class="token punctuation">(</span>ASMPATH<span class="token punctuation">)</span>naskfunc.asm Makefile
+    <span class="token variable">$</span><span class="token punctuation">(</span>NASK<span class="token punctuation">)</span> <span class="token variable">$</span><span class="token punctuation">(</span>ASMPATH<span class="token punctuation">)</span>naskfunc.asm naskfunc.obj
+
+
+
+<span class="token target symbol">ipl10.bin</span> <span class="token punctuation">:</span> <span class="token variable">$</span><span class="token punctuation">(</span>ASMPATH<span class="token punctuation">)</span>ipl10.asm Makefile
+    <span class="token variable">$</span><span class="token punctuation">(</span>NASK<span class="token punctuation">)</span> <span class="token variable">$</span><span class="token punctuation">(</span>ASMPATH<span class="token punctuation">)</span>ipl10.asm ipl10.bin
+
+<span class="token target symbol">asmhead.bin</span> <span class="token punctuation">:</span> <span class="token variable">$</span><span class="token punctuation">(</span>ASMPATH<span class="token punctuation">)</span>asmhead.asm Makefile
+    <span class="token variable">$</span><span class="token punctuation">(</span>NASK<span class="token punctuation">)</span> <span class="token variable">$</span><span class="token punctuation">(</span>ASMPATH<span class="token punctuation">)</span>asmhead.asm asmhead.bin
+
+<span class="token target symbol">font.bin</span> <span class="token punctuation">:</span> <span class="token variable">$</span><span class="token punctuation">(</span>FONTPATH<span class="token punctuation">)</span>font.txt Makefile
+    <span class="token variable">$</span><span class="token punctuation">(</span>MAKEFONT<span class="token punctuation">)</span> <span class="token variable">$</span><span class="token punctuation">(</span>FONTPATH<span class="token punctuation">)</span>font.txt font.bin
+
+<span class="token target symbol">font.obj</span> <span class="token punctuation">:</span> font.bin Makefile
+    <span class="token variable">$</span><span class="token punctuation">(</span>BIN2OBJ<span class="token punctuation">)</span> font.bin font.obj _font
+
+<span class="token target symbol">main.bim</span> <span class="token punctuation">:</span> <span class="token variable">$</span><span class="token punctuation">(</span>OBJS_MAIN<span class="token punctuation">)</span> Makefile
+<span class="token target symbol">    <span class="token variable">$</span>(OBJ2BIM) @<span class="token variable">$</span>(RULEFILE) out</span><span class="token punctuation">:</span>main.bim stack<span class="token punctuation">:</span>3136k map<span class="token punctuation">:</span>main.map \
+        <span class="token variable">$</span><span class="token punctuation">(</span>OBJS_MAIN<span class="token punctuation">)</span>
+<span class="token comment"># 3MB+64KB=3136KB</span>
+
+<span class="token target symbol">main.hrb</span> <span class="token punctuation">:</span> main.bim Makefile
+    <span class="token variable">$</span><span class="token punctuation">(</span>BIM2HRB<span class="token punctuation">)</span> main.bim main.hrb 0
+
+<span class="token target symbol">system.sys</span> <span class="token punctuation">:</span> asmhead.bin main.hrb Makefile
+    copy /B asmhead.bin+main.hrb system.sys
+<span class="token target symbol">system.img</span> <span class="token punctuation">:</span> ipl10.bin system.sys Makefile
+<span class="token target symbol">    <span class="token variable">$</span>(EDIMG)   imgin</span><span class="token punctuation">:</span>../z_tools/fdimg0at.tek \
+<span class="token target symbol">        wbinimg src</span><span class="token punctuation">:</span>ipl10.bin len<span class="token punctuation">:</span>512 from<span class="token punctuation">:</span>0 to<span class="token punctuation">:</span>0 \
+<span class="token target symbol">        copy from</span><span class="token punctuation">:</span>system.sys to<span class="token punctuation">:</span><span class="token operator">@</span><span class="token punctuation">:</span> \
+<span class="token target symbol">        imgout</span><span class="token punctuation">:</span>system.img
+
+
+
+<span class="token comment"># 其他指令</span>
+
+<span class="token target symbol">build</span> <span class="token punctuation">:</span>
+    <span class="token variable">$</span><span class="token punctuation">(</span>MAKE<span class="token punctuation">)</span> system.img
+
+<span class="token target symbol">run</span> <span class="token punctuation">:</span>
+    <span class="token variable">$</span><span class="token punctuation">(</span>MAKE<span class="token punctuation">)</span> build
+    <span class="token variable">$</span><span class="token punctuation">(</span>COPY<span class="token punctuation">)</span> system.img ..\z_tools\qemu\fdimage0.bin
+    <span class="token variable">$</span><span class="token punctuation">(</span>MAKE<span class="token punctuation">)</span> -C ../z_tools/qemu
+<span class="token comment"># $(MAKE) src_only</span>
+
+<span class="token target symbol">clean</span> <span class="token punctuation">:</span>
+    -<span class="token variable">$</span><span class="token punctuation">(</span>DEL<span class="token punctuation">)</span> *.bin
+    -<span class="token variable">$</span><span class="token punctuation">(</span>DEL<span class="token punctuation">)</span> *.gas
+    -<span class="token variable">$</span><span class="token punctuation">(</span>DEL<span class="token punctuation">)</span> *.obj
+    -<span class="token variable">$</span><span class="token punctuation">(</span>DEL<span class="token punctuation">)</span> graphic.asm
+    -<span class="token variable">$</span><span class="token punctuation">(</span>DEL<span class="token punctuation">)</span> main.asm
+    -<span class="token variable">$</span><span class="token punctuation">(</span>DEL<span class="token punctuation">)</span> main.map
+    -<span class="token variable">$</span><span class="token punctuation">(</span>DEL<span class="token punctuation">)</span> main.bim
+    -<span class="token variable">$</span><span class="token punctuation">(</span>DEL<span class="token punctuation">)</span> main.hrb
+    -<span class="token variable">$</span><span class="token punctuation">(</span>DEL<span class="token punctuation">)</span> system.sys
+
+<span class="token target symbol">src_only</span> <span class="token punctuation">:</span>
+    <span class="token variable">$</span><span class="token punctuation">(</span>MAKE<span class="token punctuation">)</span> clean
+    -<span class="token variable">$</span><span class="token punctuation">(</span>DEL<span class="token punctuation">)</span> system.img<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>绿色的地方我教你，每次添加一个c文件就要写xxx.obj<br>要做文章的文件就是上面四个，其他的直接到github上面copy</p>
+<h5 id="编译运行："><a href="#编译运行：" class="headerlink" title="编译运行："></a>编译运行：</h5><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token builtin class-name">cd</span> class01
+<span class="token punctuation">..</span><span class="token punctuation">\</span>z_tools<span class="token punctuation">\</span>make.exe run <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<figure class="mdui-img-fluid"><img src="/images/os01.png"class="mdui-img-rounded" loading="lazy"></figure>
+
+        
+        <blockquote class="mdui-m-x-0 mdui-m-t-4">
+    <strong>
+        Author: <a href="/about/">Z Chan</a><br>
+        URL: <a href="https://zchancode.github.io/2023/04/18/0x02_my-os/">https://zchancode.github.io/2023/04/18/0x02_my-os/</a><br>
+        
+            This work is licensed under a <a rel="license noopener" target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> .
+        
+    </strong>
+</blockquote>
+        
+    </div>
+    
+</article>
+<nav class="mdui-theme-layout-light mdui-color-transparent mdui-row mdui-m-b-2">
+    
+        <div class="mdui-col-xs-12 mdui-m-b-2">
+            <a class="extend prev mdui-btn mdui-ripple mdui-float-left mdui-text-truncate" rel="prev"
+                style="max-width: 100%" href="/2023/04/18/0x03_my-os/">
+                <i class="mdui-icon mdui-icon-left material-icons">arrow_back</i>0x03_自制操作系统My-OS在实体机上面运行
+            </a>
+        </div>
+    
+        <div class="mdui-col-xs-12">
+            <a class="extend next mdui-btn mdui-ripple mdui-float-right mdui-text-truncate" rel="next"
+                style="max-width: 100%" href="/2023/04/18/0x01_my-os/">
+                <i class="mdui-icon mdui-icon-right material-icons">arrow_forward</i>0x01_My-OS介绍
+            </a>
+        </div>
+    
+</nav>
+
+    </div>
+    <a href="#" class="mdui-fab mdui-fab-fixed mdui-hidden-xs mdui-color-theme-accent mdui-ripple"><i class="mdui-icon material-icons">keyboard_arrow_up</i></a>
+
+<script src="https://cdn.jsdelivr.net/npm/mdui@1.0.2/dist/js/mdui.min.js"></script>
+
+
+<script>
+    var $ = mdui.$;
+    function init(){
+        //
+    }
+    window.addEventListener("load", () => {
+        //
+        init()
+    }, {once: true});
+</script>
+
+</body>
+</html>

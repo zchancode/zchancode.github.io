@@ -37,11 +37,11 @@
     
 </style>
     
-    <title>Chan&#39;s blog</title>
-    <link rel="canonical" href="https://zchancode.github.io/">
+    <title>Categories: 自制操作系统 | Chan&#39;s blog</title>
+    <link rel="canonical" href="https://zchancode.github.io/categories/%E8%87%AA%E5%88%B6%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">
     <meta property="og:type" content="website">
 <meta property="og:title" content="Chan&#39;s blog">
-<meta property="og:url" content="https://zchancode.github.io/index.html">
+<meta property="og:url" content="https://zchancode.github.io/categories/%E8%87%AA%E5%88%B6%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/index.html">
 <meta property="og:site_name" content="Chan&#39;s blog">
 <meta property="og:locale" content="en_US">
 <meta property="article:author" content="Z Chan">
@@ -121,16 +121,16 @@
     
     <div class="mdui-card-primary mdui-ripple">
     <div class="mdui-card-primary-title">
-        <a role="heading" aria-level="1" class="mdui-text-color-theme-text" href="/2023/05/09/0x00_youtube/">0x00_youtube project introduction</a>
+        <a role="heading" aria-level="1" class="mdui-text-color-theme-text" href="/2023/04/20/0x09_my-os/">0x09_自制操作系统My-OS实现Timer</a>
         
-        <small> <a class="mdui-text-color-theme-text category-link" href="/categories/Youtube-Project/">Youtube Project</a></small>
+        <small> <a class="mdui-text-color-theme-text category-link" href="/categories/%E8%87%AA%E5%88%B6%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">自制操作系统</a></small>
         
     </div>
     <div class="mdui-card-primary-subtitle mdui-typo">
         
-        <span mdui-tooltip="{content:'Created: 2023-05-09 12:02<br>Updated: 2023-05-09 03:50'}">2023-05-09 -</span>
+        <span mdui-tooltip="{content:'Created: 2023-04-20 12:01<br>Updated: 2023-04-19 11:31'}">2023-04-20 -</span>
         
-            <span>2023/05/09/0x00_youtube/</span>
+            <span>2023/04/20/0x09_my-os/</span>
         
     </div>
 </div>
@@ -139,9 +139,9 @@
     <div class="mdui-divider"></div>
     <div class="mdui-card-content mdui-typo">
         
-            <h5 id="Which-is-introduction-of-my-project-about-video-media-Here-I-am-going-to-tell-you-What-am-I-going-to-do"><a href="#Which-is-introduction-of-my-project-about-video-media-Here-I-am-going-to-tell-you-What-am-I-going-to-do" class="headerlink" title="Which is introduction of my project about video media. Here I am going to tell you What am I going to do."></a>Which is introduction of my project about video media. Here I am going to tell you What am I going to do.</h5>
+            <p>一般机器都会有一个计时器的设备，在一定时间内不断发送中断信号，我们接收这个中断信号搞一个timer++这就是计时器了</p>
             
-            <a class="mdui-btn mdui-btn-block mdui-ripple" href="/2023/05/09/0x00_youtube/">Read more</a>
+            <a class="mdui-btn mdui-btn-block mdui-ripple" href="/2023/04/20/0x09_my-os/">Read more</a>
         
     </div>
     
@@ -151,16 +151,16 @@
     
     <div class="mdui-card-primary mdui-ripple">
     <div class="mdui-card-primary-title">
-        <a role="heading" aria-level="1" class="mdui-text-color-theme-text" href="/2023/04/23/0x01_aosp/">0x01_编译安卓源码</a>
+        <a role="heading" aria-level="1" class="mdui-text-color-theme-text" href="/2023/04/20/0x08_my-os/">0x08_自制操作系统My-OS实现内存管理</a>
         
-        <small> <a class="mdui-text-color-theme-text category-link" href="/categories/Android%E6%BA%90%E7%A0%81%E7%A0%94%E7%A9%B6/">Android源码研究</a></small>
+        <small> <a class="mdui-text-color-theme-text category-link" href="/categories/%E8%87%AA%E5%88%B6%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">自制操作系统</a></small>
         
     </div>
     <div class="mdui-card-primary-subtitle mdui-typo">
         
-        <span mdui-tooltip="{content:'Created: 2023-04-23 03:09<br>Updated: 2023-04-23 09:48'}">2023-04-23 -</span>
+        <span mdui-tooltip="{content:'Created: 2023-04-20 12:00<br>Updated: 2023-04-19 11:26'}">2023-04-20 -</span>
         
-            <span>2023/04/23/0x01_aosp/</span>
+            <span>2023/04/20/0x08_my-os/</span>
         
     </div>
 </div>
@@ -169,9 +169,12 @@
     <div class="mdui-divider"></div>
     <div class="mdui-card-content mdui-typo">
         
-            <h5 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h5><p>我的环境是deepin x64要linux的不会还有人用Windows写代码吧，这里不是支持国产，是ubuntu装不上我的笔记本，深度的安装配置的还不错，就算你的兼容做的和shit一样</p>
+            <p>内存管理第一件事情就是要划出一篇区域，规定这个地方是内存区域</p>
+<blockquote>
+<p>double *ptd &#x3D; (double * ) memman_alloc (memman,30 * sizeof(double));<br>和直接double ptd[30]有什么不同</p>
+</blockquote>
             
-            <a class="mdui-btn mdui-btn-block mdui-ripple" href="/2023/04/23/0x01_aosp/">Read more</a>
+            <a class="mdui-btn mdui-btn-block mdui-ripple" href="/2023/04/20/0x08_my-os/">Read more</a>
         
     </div>
     
@@ -181,16 +184,16 @@
     
     <div class="mdui-card-primary mdui-ripple">
     <div class="mdui-card-primary-title">
-        <a role="heading" aria-level="1" class="mdui-text-color-theme-text" href="/2023/04/22/0x01_visual/">0x01_Android使用Ceres1.14</a>
+        <a role="heading" aria-level="1" class="mdui-text-color-theme-text" href="/2023/04/19/0x07_my-os/">0x07_自制操作系统My-OS实现键盘输出字符到屏幕</a>
         
-        <small> <a class="mdui-text-color-theme-text category-link" href="/categories/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89/">机器视觉</a></small>
+        <small> <a class="mdui-text-color-theme-text category-link" href="/categories/%E8%87%AA%E5%88%B6%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">自制操作系统</a></small>
         
     </div>
     <div class="mdui-card-primary-subtitle mdui-typo">
         
-        <span mdui-tooltip="{content:'Created: 2023-04-22 03:09<br>Updated: 2023-04-23 09:33'}">2023-04-22 -</span>
+        <span mdui-tooltip="{content:'Created: 2023-04-19 01:41<br>Updated: 2023-04-19 11:36'}">2023-04-19 -</span>
         
-            <span>2023/04/22/0x01_visual/</span>
+            <span>2023/04/19/0x07_my-os/</span>
         
     </div>
 </div>
@@ -199,10 +202,9 @@
     <div class="mdui-divider"></div>
     <div class="mdui-card-content mdui-typo">
         
-            <p>Ceres 1.14.0自己去仓库下载github上有镜像</p>
-<p>环境需求：<br>You will need Android NDK r15 or higher to build Ceres solver.</p>
+            <p>收到了键盘的中断，现在想的当然是怎么把输入的文字显示到屏幕上，做成一个最简单的IO<br>我们现在要读取键盘的数据，然后显示在屏幕上面</p>
             
-            <a class="mdui-btn mdui-btn-block mdui-ripple" href="/2023/04/22/0x01_visual/">Read more</a>
+            <a class="mdui-btn mdui-btn-block mdui-ripple" href="/2023/04/19/0x07_my-os/">Read more</a>
         
     </div>
     
@@ -212,16 +214,16 @@
     
     <div class="mdui-card-primary mdui-ripple">
     <div class="mdui-card-primary-title">
-        <a role="heading" aria-level="1" class="mdui-text-color-theme-text" href="/2023/04/21/0x02_linux/">0x01_RTX1650Ti cuda11.2 cudnn8.1 tensorflow2.8.0 pytorch1.10.0</a>
+        <a role="heading" aria-level="1" class="mdui-text-color-theme-text" href="/2023/04/19/0x06_my-os/">0x06_自制操作系统My-OS，IDT,GDT,PIC初始化，实现键盘中断</a>
         
-        <small> <a class="mdui-text-color-theme-text category-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a></small>
+        <small> <a class="mdui-text-color-theme-text category-link" href="/categories/%E8%87%AA%E5%88%B6%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">自制操作系统</a></small>
         
     </div>
     <div class="mdui-card-primary-subtitle mdui-typo">
         
-        <span mdui-tooltip="{content:'Created: 2023-04-21 03:09<br>Updated: 2023-04-23 09:20'}">2023-04-21 -</span>
+        <span mdui-tooltip="{content:'Created: 2023-04-19 01:40<br>Updated: 2023-04-19 11:36'}">2023-04-19 -</span>
         
-            <span>2023/04/21/0x02_linux/</span>
+            <span>2023/04/19/0x06_my-os/</span>
         
     </div>
 </div>
@@ -230,9 +232,10 @@
     <div class="mdui-divider"></div>
     <div class="mdui-card-content mdui-typo">
         
-            <p>事实上答案就在题目里<br>1.Ubuntu20.04<br>2.cuda11.2<br>3.cudnn8.1<br>4.tensorflow2.8.0<br>5.pytorch1.10.0<br>6.gcc&lt;10<br>7.python3.10<br>版本对了就不怕检测不到你的GPU，裸机安装无需戴套</p>
+            <p>把class03改成class04</p>
+<h5 id="IDT-GDT-PIC"><a href="#IDT-GDT-PIC" class="headerlink" title="IDT,GDT,PIC"></a>IDT,GDT,PIC</h5><p>我来介绍什么是<code>IDT和GDT，PIC</code>，怎么实现键盘中断</p>
             
-            <a class="mdui-btn mdui-btn-block mdui-ripple" href="/2023/04/21/0x02_linux/">Read more</a>
+            <a class="mdui-btn mdui-btn-block mdui-ripple" href="/2023/04/19/0x06_my-os/">Read more</a>
         
     </div>
     
@@ -242,16 +245,16 @@
     
     <div class="mdui-card-primary mdui-ripple">
     <div class="mdui-card-primary-title">
-        <a role="heading" aria-level="1" class="mdui-text-color-theme-text" href="/2023/04/20/0x01_linux/">0x01_Gparted调整磁盘大小</a>
+        <a role="heading" aria-level="1" class="mdui-text-color-theme-text" href="/2023/04/19/0x05_my-os/">0x05_My-OS显示字符串和任意参数</a>
         
-        <small> <a class="mdui-text-color-theme-text category-link" href="/categories/Linux/">Linux</a></small>
+        <small> <a class="mdui-text-color-theme-text category-link" href="/categories/%E8%87%AA%E5%88%B6%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">自制操作系统</a></small>
         
     </div>
     <div class="mdui-card-primary-subtitle mdui-typo">
         
-        <span mdui-tooltip="{content:'Created: 2023-04-20 03:09<br>Updated: 2023-04-19 03:23'}">2023-04-20 -</span>
+        <span mdui-tooltip="{content:'Created: 2023-04-19 01:39<br>Updated: 2023-04-19 11:34'}">2023-04-19 -</span>
         
-            <span>2023/04/20/0x01_linux/</span>
+            <span>2023/04/19/0x05_my-os/</span>
         
     </div>
 </div>
@@ -260,9 +263,9 @@
     <div class="mdui-divider"></div>
     <div class="mdui-card-content mdui-typo">
         
-            <p>It’s easy when you search on google</p>
+            <p>要解决两个问题，第一个如何显示字符串，printf？我之前已经说了所有的头文件都要自己写，printf是stdio里的可是我们没有stdio<br>我们要通过画像素点的方式显示字符串，有点像我的世界的红石系统，用红石点亮一个方块，第二个问题是如何调用类似sprintf的</p>
             
-            <a class="mdui-btn mdui-btn-block mdui-ripple" href="/2023/04/20/0x01_linux/">Read more</a>
+            <a class="mdui-btn mdui-btn-block mdui-ripple" href="/2023/04/19/0x05_my-os/">Read more</a>
         
     </div>
     
@@ -272,16 +275,16 @@
     
     <div class="mdui-card-primary mdui-ripple">
     <div class="mdui-card-primary-title">
-        <a role="heading" aria-level="1" class="mdui-text-color-theme-text" href="/2023/04/20/0x01_essay/">0x01_Monintoring Student Deperssion by Mobile Devices with Autoencoder Networks</a>
+        <a role="heading" aria-level="1" class="mdui-text-color-theme-text" href="/2023/04/19/0x04_my-os/">0x04_自制操作系统My-OS实现自定义颜色</a>
         
-        <small> <a class="mdui-text-color-theme-text category-link" href="/categories/%E5%AD%A6%E6%9C%AF%E8%AE%BA%E6%96%87/">学术论文</a></small>
+        <small> <a class="mdui-text-color-theme-text category-link" href="/categories/%E8%87%AA%E5%88%B6%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">自制操作系统</a></small>
         
     </div>
     <div class="mdui-card-primary-subtitle mdui-typo">
         
-        <span mdui-tooltip="{content:'Created: 2023-04-20 12:12<br>Updated: 2023-04-23 09:49'}">2023-04-20 -</span>
+        <span mdui-tooltip="{content:'Created: 2023-04-19 01:38<br>Updated: 2023-04-18 04:45'}">2023-04-19 -</span>
         
-            <span>2023/04/20/0x01_essay/</span>
+            <span>2023/04/19/0x04_my-os/</span>
         
     </div>
 </div>
@@ -290,9 +293,11 @@
     <div class="mdui-divider"></div>
     <div class="mdui-card-content mdui-typo">
         
-            <p>一篇二作，我的工作是数据采集</p>
+            <h5 id="前言："><a href="#前言：" class="headerlink" title="前言："></a>前言：</h5><p>0x03我们提到：<br>把12（红色）用循环写入显存，每个像素点怎么显示都要看对应的显存地址，比如0xa0000到0xaffff就是每一个像素点的显存</p>
+<p>你问为什么12就是红色，这些东西在主板出厂的时候就是规定好的，就是有点调用主板api的味道，这是我的猜测，具体为什么还要你们来查</p>
+<p>你会发现12是红色，11就是另一种颜色，有没有办法可以自定义颜色呢</p>
             
-            <a class="mdui-btn mdui-btn-block mdui-ripple" href="/2023/04/20/0x01_essay/">Read more</a>
+            <a class="mdui-btn mdui-btn-block mdui-ripple" href="/2023/04/19/0x04_my-os/">Read more</a>
         
     </div>
     
@@ -302,16 +307,16 @@
     
     <div class="mdui-card-primary mdui-ripple">
     <div class="mdui-card-primary-title">
-        <a role="heading" aria-level="1" class="mdui-text-color-theme-text" href="/2023/04/20/0x10_android/">0x01_Nexus 5X安装gcc</a>
+        <a role="heading" aria-level="1" class="mdui-text-color-theme-text" href="/2023/04/18/0x03_my-os/">0x03_自制操作系统My-OS在实体机上面运行</a>
         
-        <small> <a class="mdui-text-color-theme-text category-link" href="/categories/Android%E7%8E%A9%E6%9C%BA/">Android玩机</a></small>
+        <small> <a class="mdui-text-color-theme-text category-link" href="/categories/%E8%87%AA%E5%88%B6%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">自制操作系统</a></small>
         
     </div>
     <div class="mdui-card-primary-subtitle mdui-typo">
         
-        <span mdui-tooltip="{content:'Created: 2023-04-20 12:11<br>Updated: 2023-04-19 01:26'}">2023-04-20 -</span>
+        <span mdui-tooltip="{content:'Created: 2023-04-18 11:38<br>Updated: 2023-04-18 04:34'}">2023-04-18 -</span>
         
-            <span>2023/04/20/0x10_android/</span>
+            <span>2023/04/18/0x03_my-os/</span>
         
     </div>
 </div>
@@ -320,9 +325,9 @@
     <div class="mdui-divider"></div>
     <div class="mdui-card-content mdui-typo">
         
-            <p>在安卓上配置gcc并编译helloworld</p>
+            <p>haribote用在1.44软盘上面的，建立这种环境比较困难，但是我们可以用grub进行引导，我在想整个os最大1.44x10^20Byte我以后要写多点该怎么办呢<br>先不管了，我下面直接教软盘上面的系统怎么在实体机上面运行</p>
             
-            <a class="mdui-btn mdui-btn-block mdui-ripple" href="/2023/04/20/0x10_android/">Read more</a>
+            <a class="mdui-btn mdui-btn-block mdui-ripple" href="/2023/04/18/0x03_my-os/">Read more</a>
         
     </div>
     
@@ -332,16 +337,16 @@
     
     <div class="mdui-card-primary mdui-ripple">
     <div class="mdui-card-primary-title">
-        <a role="heading" aria-level="1" class="mdui-text-color-theme-text" href="/2023/04/20/0x09_android/">0x04_Android实现Fargment</a>
+        <a role="heading" aria-level="1" class="mdui-text-color-theme-text" href="/2023/04/18/0x02_my-os/">0x02_我的第一个操作系统My-OS</a>
         
-        <small> <a class="mdui-text-color-theme-text category-link" href="/categories/Android%E5%B0%8F%E9%A1%B9%E7%9B%AE/">Android小项目</a></small>
+        <small> <a class="mdui-text-color-theme-text category-link" href="/categories/%E8%87%AA%E5%88%B6%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">自制操作系统</a></small>
         
     </div>
     <div class="mdui-card-primary-subtitle mdui-typo">
         
-        <span mdui-tooltip="{content:'Created: 2023-04-20 12:10<br>Updated: 2023-04-19 01:12'}">2023-04-20 -</span>
+        <span mdui-tooltip="{content:'Created: 2023-04-18 10:38<br>Updated: 2023-04-19 11:33'}">2023-04-18 -</span>
         
-            <span>2023/04/20/0x09_android/</span>
+            <span>2023/04/18/0x02_my-os/</span>
         
     </div>
 </div>
@@ -350,9 +355,10 @@
     <div class="mdui-divider"></div>
     <div class="mdui-card-content mdui-typo">
         
-            <p>实现简单的Fragment布局</p>
+            <p>首先配置环境见目录0x00，创建class01文件夹</p>
+<p>直接看目录结构</p>
             
-            <a class="mdui-btn mdui-btn-block mdui-ripple" href="/2023/04/20/0x09_android/">Read more</a>
+            <a class="mdui-btn mdui-btn-block mdui-ripple" href="/2023/04/18/0x02_my-os/">Read more</a>
         
     </div>
     
@@ -362,16 +368,16 @@
     
     <div class="mdui-card-primary mdui-ripple">
     <div class="mdui-card-primary-title">
-        <a role="heading" aria-level="1" class="mdui-text-color-theme-text" href="/2023/04/20/0x08_android/">0x03_Android实现播放指定函数的声音</a>
+        <a role="heading" aria-level="1" class="mdui-text-color-theme-text" href="/2023/04/18/0x01_my-os/">0x01_My-OS介绍</a>
         
-        <small> <a class="mdui-text-color-theme-text category-link" href="/categories/Android%E5%B0%8F%E9%A1%B9%E7%9B%AE/">Android小项目</a></small>
+        <small> <a class="mdui-text-color-theme-text category-link" href="/categories/%E8%87%AA%E5%88%B6%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">自制操作系统</a></small>
         
     </div>
     <div class="mdui-card-primary-subtitle mdui-typo">
         
-        <span mdui-tooltip="{content:'Created: 2023-04-20 12:09<br>Updated: 2023-04-19 01:03'}">2023-04-20 -</span>
+        <span mdui-tooltip="{content:'Created: 2023-04-18 11:38<br>Updated: 2023-04-19 11:32'}">2023-04-18 -</span>
         
-            <span>2023/04/20/0x08_android/</span>
+            <span>2023/04/18/0x01_my-os/</span>
         
     </div>
 </div>
@@ -380,9 +386,13 @@
     <div class="mdui-divider"></div>
     <div class="mdui-card-content mdui-typo">
         
-            <p>实现左右声道播放指定函数的声音比如sin</p>
+            <h2 id="功能"><a href="#功能" class="headerlink" title="功能"></a>功能</h2><ul>
+<li>实现了运行 app，调用自己写的 API 实现输出字符串</li>
+<li>有终端输入输出界面</li>
+<li>带有计时器</li>
+<li>支持鼠标和键盘
             
-            <a class="mdui-btn mdui-btn-block mdui-ripple" href="/2023/04/20/0x08_android/">Read more</a>
+            <a class="mdui-btn mdui-btn-block mdui-ripple" href="/2023/04/18/0x01_my-os/">Read more</a>
         
     </div>
     
@@ -392,16 +402,16 @@
     
     <div class="mdui-card-primary mdui-ripple">
     <div class="mdui-card-primary-title">
-        <a role="heading" aria-level="1" class="mdui-text-color-theme-text" href="/2023/04/20/0x07_android/">0x02_Android实现自定义toast</a>
+        <a role="heading" aria-level="1" class="mdui-text-color-theme-text" href="/2023/04/18/0x00_my-os/">搭建自制操作系统开发环境</a>
         
-        <small> <a class="mdui-text-color-theme-text category-link" href="/categories/Android%E5%B0%8F%E9%A1%B9%E7%9B%AE/">Android小项目</a></small>
+        <small> <a class="mdui-text-color-theme-text category-link" href="/categories/%E8%87%AA%E5%88%B6%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">自制操作系统</a></small>
         
     </div>
     <div class="mdui-card-primary-subtitle mdui-typo">
         
-        <span mdui-tooltip="{content:'Created: 2023-04-20 12:08<br>Updated: 2023-04-19 12:50'}">2023-04-20 -</span>
+        <span mdui-tooltip="{content:'Created: 2023-04-18 10:45<br>Updated: 2023-04-18 11:00'}">2023-04-18 -</span>
         
-            <span>2023/04/20/0x07_android/</span>
+            <span>2023/04/18/0x00_my-os/</span>
         
     </div>
 </div>
@@ -410,27 +420,17 @@
     <div class="mdui-divider"></div>
     <div class="mdui-card-content mdui-typo">
         
-            <p>实现自定义toast让你的toast句子加图片</p>
+            <h2 id="所需工具"><a href="#所需工具" class="headerlink" title="所需工具"></a>所需工具</h2><ul>
+<li>Visual Studio Code</li>
+<li>编译工具（原本使用 haribote，现在改用 nasm + gcc）
             
-            <a class="mdui-btn mdui-btn-block mdui-ripple" href="/2023/04/20/0x07_android/">Read more</a>
+            <a class="mdui-btn mdui-btn-block mdui-ripple" href="/2023/04/18/0x00_my-os/">Read more</a>
         
     </div>
     
 </section>
 
 </div>
-
-    <nav class="mdui-theme-layout-light mdui-color-transparent mdui-row mdui-row-gapless mdui-m-b-2 mdui-m-x-0">
-    <div class="mdui-col-xs-12 mdui-col-sm-6">
-        <a class="mdui-btn mdui-ripple mdui-float-left" rel="prev" disabled>
-        <i class="mdui-icon mdui-icon-left material-icons">arrow_back</i>Newer</a>
-    </div>
-    <div class="mdui-col-xs-12 mdui-col-sm-6">
-        <a class="mdui-btn mdui-ripple mdui-float-right" rel="next" href="/page/2/">
-        
-        <i class="mdui-icon mdui-icon-right material-icons">arrow_forward</i>Older</a>
-    </div>
-</nav>
 
     </div>
     <a href="#" class="mdui-fab mdui-fab-fixed mdui-hidden-xs mdui-color-theme-accent mdui-ripple"><i class="mdui-icon material-icons">keyboard_arrow_up</i></a>

@@ -37,15 +37,23 @@
     
 </style>
     
-    <title>Archives: 2023-5 | Chan&#39;s blog</title>
-    <link rel="canonical" href="https://zchancode.github.io/archives/2023/05/">
-    <meta property="og:type" content="website">
-<meta property="og:title" content="Chan&#39;s blog">
-<meta property="og:url" content="https://zchancode.github.io/archives/2023/05/index.html">
+    <title>0x03_自制操作系统My-OS在实体机上面运行 | Chan&#39;s blog</title>
+    <link rel="canonical" href="https://zchancode.github.io/2023/04/18/0x03_my-os/">
+    <meta name="description" content="haribote用在1.44软盘上面的，建立这种环境比较困难，但是我们可以用grub进行引导，我在想整个os最大1.44x10^20Byte我以后要写多点该怎么办呢先不管了，我下面直接教软盘上面的系统怎么在实体机上面运行">
+<meta property="og:type" content="article">
+<meta property="og:title" content="0x03_自制操作系统My-OS在实体机上面运行">
+<meta property="og:url" content="https://zchancode.github.io/2023/04/18/0x03_my-os/index.html">
 <meta property="og:site_name" content="Chan&#39;s blog">
+<meta property="og:description" content="haribote用在1.44软盘上面的，建立这种环境比较困难，但是我们可以用grub进行引导，我在想整个os最大1.44x10^20Byte我以后要写多点该怎么办呢先不管了，我下面直接教软盘上面的系统怎么在实体机上面运行">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://zchancode.github.io/images/os02.png">
+<meta property="og:image" content="https://zchancode.github.io/images/os03.png">
+<meta property="og:image" content="https://zchancode.github.io/images/os04.png">
+<meta property="article:published_time" content="2023-04-18T15:38:00.000Z">
+<meta property="article:modified_time" content="2023-04-18T08:34:43.000Z">
 <meta property="article:author" content="Z Chan">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://zchancode.github.io/images/os02.png">
 <meta name="generator" content="Hexo 6.3.0"></head>
 <body class="mdui-theme-primary-indigo mdui-theme-accent-pink mdui-appbar-with-toolbar ">
     <div class="mdui-theme-layout-light">
@@ -115,22 +123,20 @@
 </aside>
     </div>
     <div class="mdui-container-fluid mdui-center" style="max-width:720px">
-        <div class="mdui-theme-layout-light mdui-color-transparent">
-
-    <section class="mdui-card mdui-hoverable mdui-shadow-1 mdui-m-y-2" style="opacity: 1; border-radius: 4px">
+        <article class="mdui-card mdui-hoverable mdui-shadow-1 mdui-m-y-2" style="opacity: 1; border-radius: 4px">
     
     <div class="mdui-card-primary mdui-ripple">
     <div class="mdui-card-primary-title">
-        <a role="heading" aria-level="1" class="mdui-text-color-theme-text" href="/2023/05/09/0x00_youtube/">0x00_youtube project introduction</a>
+        <a role="heading" aria-level="1" class="mdui-text-color-theme-text" >0x03_自制操作系统My-OS在实体机上面运行</a>
         
-        <small> <a class="mdui-text-color-theme-text category-link" href="/categories/Youtube-Project/">Youtube Project</a></small>
+        <small> <a class="mdui-text-color-theme-text category-link" href="/categories/%E8%87%AA%E5%88%B6%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">自制操作系统</a></small>
         
     </div>
     <div class="mdui-card-primary-subtitle mdui-typo">
         
-        <span mdui-tooltip="{content:'Created: 2023-05-09 12:02<br>Updated: 2023-05-09 03:50'}">2023-05-09 -</span>
+        <span mdui-tooltip="{content:'Created: 2023-04-18 11:38<br>Updated: 2023-04-18 04:34'}">2023-04-18 -</span>
         
-            <span>2023/05/09/0x00_youtube/</span>
+            <span>2023/04/18/0x03_my-os/</span>
         
     </div>
 </div>
@@ -139,15 +145,44 @@
     <div class="mdui-divider"></div>
     <div class="mdui-card-content mdui-typo">
         
-            <h5 id="Which-is-introduction-of-my-project-about-video-media-Here-I-am-going-to-tell-you-What-am-I-going-to-do"><a href="#Which-is-introduction-of-my-project-about-video-media-Here-I-am-going-to-tell-you-What-am-I-going-to-do" class="headerlink" title="Which is introduction of my project about video media. Here I am going to tell you What am I going to do."></a>Which is introduction of my project about video media. Here I am going to tell you What am I going to do.</h5>
-            
-            <a class="mdui-btn mdui-btn-block mdui-ripple" href="/2023/05/09/0x00_youtube/">Read more</a>
+        <p>haribote用在1.44软盘上面的，建立这种环境比较困难，但是我们可以用grub进行引导，我在想整个os最大1.44x10^20Byte我以后要写多点该怎么办呢<br>先不管了，我下面直接教软盘上面的系统怎么在实体机上面运行</p>
+<span id="more"></span>
+<p>1.打开开发环境（见目录0x00）里面的<code>install</code>文件夹<br><img src="/images/os02.png"></p>
+<p>2.先用<code>SDFormatter</code>格式化你的U盘</p>
+<p>3.打开<code>grubinst</code>文件夹用<strong>管理员</strong>权限打开<code>gui.exe</code><br><img src="/images/os03.png"><br>选中你的u盘，不要选你的系统盘，你自己看清楚<br>点击安装就好了，按一下回车就算安装完了</p>
+<p>4.然后把<code>grub_files</code>里面的文件放到U盘里<br><img src="/images/os04.png"><br>5.外加你自己编译的<code>img</code>，名字要是<code>system.img</code><br>6.U盘插入电脑，<code>BIOS</code>设置常规启动，<strong>不是UEFI</strong></p>
+
+        
+        <blockquote class="mdui-m-x-0 mdui-m-t-4">
+    <strong>
+        Author: <a href="/about/">Z Chan</a><br>
+        URL: <a href="https://zchancode.github.io/2023/04/18/0x03_my-os/">https://zchancode.github.io/2023/04/18/0x03_my-os/</a><br>
+        
+            This work is licensed under a <a rel="license noopener" target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> .
+        
+    </strong>
+</blockquote>
         
     </div>
     
-</section>
-
-</div>
+</article>
+<nav class="mdui-theme-layout-light mdui-color-transparent mdui-row mdui-m-b-2">
+    
+        <div class="mdui-col-xs-12 mdui-m-b-2">
+            <a class="extend prev mdui-btn mdui-ripple mdui-float-left mdui-text-truncate" rel="prev"
+                style="max-width: 100%" href="/2023/04/19/0x04_my-os/">
+                <i class="mdui-icon mdui-icon-left material-icons">arrow_back</i>0x04_自制操作系统My-OS实现自定义颜色
+            </a>
+        </div>
+    
+        <div class="mdui-col-xs-12">
+            <a class="extend next mdui-btn mdui-ripple mdui-float-right mdui-text-truncate" rel="next"
+                style="max-width: 100%" href="/2023/04/18/0x02_my-os/">
+                <i class="mdui-icon mdui-icon-right material-icons">arrow_forward</i>0x02_我的第一个操作系统My-OS
+            </a>
+        </div>
+    
+</nav>
 
     </div>
     <a href="#" class="mdui-fab mdui-fab-fixed mdui-hidden-xs mdui-color-theme-accent mdui-ripple"><i class="mdui-icon material-icons">keyboard_arrow_up</i></a>

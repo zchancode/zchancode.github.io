@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+    <meta charset="utf-8">
+<meta name="renderer" content="webkit">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+
+
+    <link rel="dns-prefetch" //cdn.jsdelivr.net>
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdui@1.0.2/dist/css/mdui.min.css">
+
+
+
+    
+<link rel="stylesheet" href="/css/prism-m.css">
+
+    
+
+
+
+<meta name="theme-color" content="#3F51B5">
+
+
+<style>
+    html,body{scroll-behavior:smooth;min-height:100vh}
+    blockquote>strong>a{word-break:break-all}
+    .mdui-hoverable:hover,.mdui-hoverable:focus{-webkit-box-shadow:0 5px 5px -3px rgba(0,0,0,.2),0 8px 10px 1px rgba(0,0,0,.14),0 3px 14px 2px rgba(0,0,0,.12) !important;box-shadow:0 5px 5px -3px rgba(0,0,0,.2),0 8px 10px 1px rgba(0,0,0,.14),0 3px 14px 2px rgba(0,0,0,.12) !important;}
+    .mdui-card-primary-title a{text-decoration:none !important}
+    .page-number{display:none !important}
+    .mdui-container-fluid{transition:opacity .4s}
+    
+        body{background-color: #f6f6f6}
+
+    
+</style>
+    
+    <title>0x06_自制操作系统My-OS，IDT,GDT,PIC初始化，实现键盘中断 | Chan&#39;s blog</title>
+    <link rel="canonical" href="https://zchancode.github.io/2023/04/19/0x06_my-os/">
+    <meta name="description" content="把class03改成class04 IDT,GDT,PIC我来介绍什么是IDT和GDT，PIC，怎么实现键盘中断">
+<meta property="og:type" content="article">
+<meta property="og:title" content="0x06_自制操作系统My-OS，IDT,GDT,PIC初始化，实现键盘中断">
+<meta property="og:url" content="https://zchancode.github.io/2023/04/19/0x06_my-os/index.html">
+<meta property="og:site_name" content="Chan&#39;s blog">
+<meta property="og:description" content="把class03改成class04 IDT,GDT,PIC我来介绍什么是IDT和GDT，PIC，怎么实现键盘中断">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://zchancode.github.io/images/os08.png">
+<meta property="article:published_time" content="2023-04-18T17:40:00.000Z">
+<meta property="article:modified_time" content="2023-04-19T03:36:12.000Z">
+<meta property="article:author" content="Z Chan">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://zchancode.github.io/images/os08.png">
+<meta name="generator" content="Hexo 6.3.0"></head>
+<body class="mdui-theme-primary-indigo mdui-theme-accent-pink mdui-appbar-with-toolbar ">
+    <div class="mdui-theme-layout-light">
+    <header id="appbar" class="mdui-appbar mdui-appbar-fixed mdui-shadow-0 mdui-appbar-scroll-hide">
+    <div class="mdui-toolbar">
+        <button mdui-drawer="{target: '.mdui-drawer'}" class="mdui-btn mdui-btn-icon mdui-ripple"><i class="mdui-icon material-icons">menu</i></button>
+        <a href="/" class="mdui-typo-title">Chan&#39;s blog</a>
+        <div class="mdui-toolbar-spacer"></div>
+        
+        <a href="/search/" class="mdui-btn mdui-btn-icon mdui-ripple"><i class="mdui-icon material-icons">search</i></a>
+        
+    </div>
+</header>
+    <aside class="mdui-drawer mdui-drawer-close">
+    <nav class="mdui-list" mdui-collapse="{accordion: true}">
+        <a href="/about/"  class="mdui-list-item mdui-ripple">
+            <div class="mdui-list-item-avatar">
+                
+                <i class="mdui-color-theme-primary mdui-icon material-icons">person</i>
+                
+            </div>
+            <div class="mdui-list-item-content">Z Chan</div>
+        </a>
+        <div class="mdui-divider"></div>
+        
+        <a href="/" class="mdui-list-item mdui-ripple">
+            <i class="mdui-list-item-icon mdui-icon material-icons">home</i>
+            <div class="mdui-list-item-content">Home</div>
+        </a>
+        
+        <div class="mdui-collapse-item">
+            <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+                <i class="mdui-list-item-icon mdui-icon material-icons">inbox</i>
+                <div class="mdui-list-item-content">Archives</div>
+                <i class="mdui-collapse-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+            </div>
+            <div class="mdui-collapse-item-body mdui-list mdui-list-dense">
+                <a class="mdui-list-item mdui-ripple m-link" href="/archives/2023/05/">May 2023</a><a class="mdui-list-item mdui-ripple m-link" href="/archives/2023/04/">April 2023</a>
+            </div>
+        </div>
+        
+        <div class="mdui-collapse-item">
+            <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+                <i class="mdui-list-item-icon mdui-icon material-icons">apps</i>
+                <div class="mdui-list-item-content">Categories</div>
+                <i class="mdui-collapse-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+            </div>
+            <div class="mdui-collapse-item-body mdui-list mdui-list-dense">
+                <a class="mdui-list-item mdui-ripple m-link" href="/categories/Android%E5%B0%8F%E9%A1%B9%E7%9B%AE/">Android小项目</a><a class="mdui-list-item mdui-ripple m-link" href="/categories/Android%E5%B7%A5%E5%85%B7%E7%B1%BB/">Android工具类</a><a class="mdui-list-item mdui-ripple m-link" href="/categories/Android%E6%BA%90%E7%A0%81%E7%A0%94%E7%A9%B6/">Android源码研究</a><a class="mdui-list-item mdui-ripple m-link" href="/categories/Android%E7%8E%A9%E6%9C%BA/">Android玩机</a><a class="mdui-list-item mdui-ripple m-link" href="/categories/Hexo%E5%8D%9A%E5%AE%A2%E6%95%99%E7%A8%8B/">Hexo博客教程</a><a class="mdui-list-item mdui-ripple m-link" href="/categories/Linux/">Linux</a><a class="mdui-list-item mdui-ripple m-link" href="/categories/Youtube-Project/">Youtube Project</a><a class="mdui-list-item mdui-ripple m-link" href="/categories/%E5%AD%A6%E6%9C%AF%E8%AE%BA%E6%96%87/">学术论文</a><a class="mdui-list-item mdui-ripple m-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><a class="mdui-list-item mdui-ripple m-link" href="/categories/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89/">机器视觉</a><a class="mdui-list-item mdui-ripple m-link" href="/categories/%E8%87%AA%E5%88%B6%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">自制操作系统</a>
+            </div>
+        </div>
+        
+    </nav>
+    <div class="mdui-divider"></div>
+    <footer class="mdui-m-l-2 mdui-m-t-1 mdui-typo mdui-text-color-theme-disabled">
+        <p class="mdui-m-b-0">
+            
+            ©
+            2023 Z Chan<br>
+            
+            Powered by <a href="https://hexo.io/" rel="noreferrer" target="_blank">Hexo</a><br>
+            
+            Theme - <a href="https://github.com/kwaa/hexo-theme-m" rel="noreferrer" target="_blank"
+                mdui-tooltip="{position:'right', content: 'by 藍+85CD'}">M</a></p>
+            
+    </footer>
+</aside>
+    </div>
+    <div class="mdui-container-fluid mdui-center" style="max-width:720px">
+        <article class="mdui-card mdui-hoverable mdui-shadow-1 mdui-m-y-2" style="opacity: 1; border-radius: 4px">
+    
+    <div class="mdui-card-primary mdui-ripple">
+    <div class="mdui-card-primary-title">
+        <a role="heading" aria-level="1" class="mdui-text-color-theme-text" >0x06_自制操作系统My-OS，IDT,GDT,PIC初始化，实现键盘中断</a>
+        
+        <small> <a class="mdui-text-color-theme-text category-link" href="/categories/%E8%87%AA%E5%88%B6%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">自制操作系统</a></small>
+        
+    </div>
+    <div class="mdui-card-primary-subtitle mdui-typo">
+        
+        <span mdui-tooltip="{content:'Created: 2023-04-19 01:40<br>Updated: 2023-04-19 11:36'}">2023-04-19 -</span>
+        
+            <span>2023/04/19/0x06_my-os/</span>
+        
+    </div>
+</div>
+    
+    
+    <div class="mdui-divider"></div>
+    <div class="mdui-card-content mdui-typo">
+        
+        <p>把class03改成class04</p>
+<h5 id="IDT-GDT-PIC"><a href="#IDT-GDT-PIC" class="headerlink" title="IDT,GDT,PIC"></a>IDT,GDT,PIC</h5><p>我来介绍什么是<code>IDT和GDT，PIC</code>，怎么实现键盘中断</p>
+<span id="more"></span>
+<p>GDT全局描述表在16位CPU用不到，到了32位CPU要用。</p>
+<p>16位CPU实模式用基地址x16+偏移地址去寻找内存地址，到了32位也用基地址x16+偏移地址找地址但是，32位CPU有保护模式，防止程序乱访问内存</p>
+<p><code>所以用GDT</code><br><code>IDT</code>，Interrupt Descriptor Table，即中断描述符表，用来联系中断和处理函数的，比如A中断发生-&gt;执行B函数</p>
+<p><code>PIC</code>（可编程中断控制器），中断是由PIC产生的</p>
+<p>这是我自己的理解，你要想搞明白得自己去找资料</p>
+<p>实现键盘中断<br>键盘按下-PIC收到发起中断-CPU处理中断-执行对应函数</p>
+<p>这是我自己意淫的，具体怎么回事你得自己找资料</p>
+<p>首先初始化<code>pic，gdt，idt</code><br>创建文件<code>dsctbl.c</code></p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token comment">/* GDT、IDT、descriptor table 关系处理 */</span>
+
+
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">"include/head.h"</span></span>
+
+<span class="token keyword">void</span> <span class="token function">init_gdtidt</span><span class="token punctuation">(</span><span class="token keyword">void</span><span class="token punctuation">)</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token keyword">struct</span> <span class="token class-name">SEGMENT_DESCRIPTOR</span> <span class="token operator">*</span>gdt <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">struct</span> <span class="token class-name">SEGMENT_DESCRIPTOR</span> <span class="token operator">*</span><span class="token punctuation">)</span> ADR_GDT<span class="token punctuation">;</span>
+    <span class="token keyword">struct</span> <span class="token class-name">GATE_DESCRIPTOR</span>    <span class="token operator">*</span>idt <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">struct</span> <span class="token class-name">GATE_DESCRIPTOR</span>    <span class="token operator">*</span><span class="token punctuation">)</span> ADR_IDT<span class="token punctuation">;</span>
+    <span class="token keyword">int</span> i<span class="token punctuation">;</span>
+
+    <span class="token comment">/* GDT初始化 */</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span>i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;=</span> LIMIT_GDT <span class="token operator">/</span> <span class="token number">8</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token function">set_segmdesc</span><span class="token punctuation">(</span>gdt <span class="token operator">+</span> i<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token function">set_segmdesc</span><span class="token punctuation">(</span>gdt <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">0xffffffff</span><span class="token punctuation">,</span>   <span class="token number">0x00000000</span><span class="token punctuation">,</span> AR_DATA32_RW<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">set_segmdesc</span><span class="token punctuation">(</span>gdt <span class="token operator">+</span> <span class="token number">2</span><span class="token punctuation">,</span> LIMIT_BOTPAK<span class="token punctuation">,</span> ADR_BOTPAK<span class="token punctuation">,</span> AR_CODE32_ER<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">load_gdtr</span><span class="token punctuation">(</span>LIMIT_GDT<span class="token punctuation">,</span> ADR_GDT<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment">/* IDT初始化 */</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span>i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;=</span> LIMIT_IDT <span class="token operator">/</span> <span class="token number">8</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token function">set_gatedesc</span><span class="token punctuation">(</span>idt <span class="token operator">+</span> i<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token function">load_idtr</span><span class="token punctuation">(</span>LIMIT_IDT<span class="token punctuation">,</span> ADR_IDT<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment">/* IDT设置*/</span>    <span class="token function">set_gatedesc</span><span class="token punctuation">(</span>idt <span class="token operator">+</span> <span class="token number">0x21</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span> asm_inthandler21<span class="token punctuation">,</span> <span class="token number">2</span> <span class="token operator">*</span> <span class="token number">8</span><span class="token punctuation">,</span> AR_INTGATE32<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">/* IDT的设定 */</span>
+    <span class="token keyword">return</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token keyword">void</span> <span class="token function">set_segmdesc</span><span class="token punctuation">(</span><span class="token keyword">struct</span> <span class="token class-name">SEGMENT_DESCRIPTOR</span> <span class="token operator">*</span>sd<span class="token punctuation">,</span> <span class="token keyword">unsigned</span> <span class="token keyword">int</span> limit<span class="token punctuation">,</span> <span class="token keyword">int</span> base<span class="token punctuation">,</span> <span class="token keyword">int</span> ar<span class="token punctuation">)</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>limit <span class="token operator">></span> <span class="token number">0xfffff</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        ar <span class="token operator">|=</span> <span class="token number">0x8000</span><span class="token punctuation">;</span> <span class="token comment">/* G_bit = 1 */</span>
+        limit <span class="token operator">/=</span> <span class="token number">0x1000</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    sd<span class="token operator">-></span>limit_low    <span class="token operator">=</span> limit <span class="token operator">&amp;</span> <span class="token number">0xffff</span><span class="token punctuation">;</span>
+    sd<span class="token operator">-></span>base_low     <span class="token operator">=</span> base <span class="token operator">&amp;</span> <span class="token number">0xffff</span><span class="token punctuation">;</span>
+    sd<span class="token operator">-></span>base_mid     <span class="token operator">=</span> <span class="token punctuation">(</span>base <span class="token operator">>></span> <span class="token number">16</span><span class="token punctuation">)</span> <span class="token operator">&amp;</span> <span class="token number">0xff</span><span class="token punctuation">;</span>
+    sd<span class="token operator">-></span>access_right <span class="token operator">=</span> ar <span class="token operator">&amp;</span> <span class="token number">0xff</span><span class="token punctuation">;</span>
+    sd<span class="token operator">-></span>limit_high   <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>limit <span class="token operator">>></span> <span class="token number">16</span><span class="token punctuation">)</span> <span class="token operator">&amp;</span> <span class="token number">0x0f</span><span class="token punctuation">)</span> <span class="token operator">|</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>ar <span class="token operator">>></span> <span class="token number">8</span><span class="token punctuation">)</span> <span class="token operator">&amp;</span> <span class="token number">0xf0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    sd<span class="token operator">-></span>base_high    <span class="token operator">=</span> <span class="token punctuation">(</span>base <span class="token operator">>></span> <span class="token number">24</span><span class="token punctuation">)</span> <span class="token operator">&amp;</span> <span class="token number">0xff</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token keyword">void</span> <span class="token function">set_gatedesc</span><span class="token punctuation">(</span><span class="token keyword">struct</span> <span class="token class-name">GATE_DESCRIPTOR</span> <span class="token operator">*</span>gd<span class="token punctuation">,</span> <span class="token keyword">int</span> offset<span class="token punctuation">,</span> <span class="token keyword">int</span> selector<span class="token punctuation">,</span> <span class="token keyword">int</span> ar<span class="token punctuation">)</span>
+<span class="token punctuation">&#123;</span>
+    gd<span class="token operator">-></span>offset_low   <span class="token operator">=</span> offset <span class="token operator">&amp;</span> <span class="token number">0xffff</span><span class="token punctuation">;</span>
+    gd<span class="token operator">-></span>selector     <span class="token operator">=</span> selector<span class="token punctuation">;</span>
+    gd<span class="token operator">-></span>dw_count     <span class="token operator">=</span> <span class="token punctuation">(</span>ar <span class="token operator">>></span> <span class="token number">8</span><span class="token punctuation">)</span> <span class="token operator">&amp;</span> <span class="token number">0xff</span><span class="token punctuation">;</span>
+    gd<span class="token operator">-></span>access_right <span class="token operator">=</span> ar <span class="token operator">&amp;</span> <span class="token number">0xff</span><span class="token punctuation">;</span>
+    gd<span class="token operator">-></span>offset_high  <span class="token operator">=</span> <span class="token punctuation">(</span>offset <span class="token operator">>></span> <span class="token number">16</span><span class="token punctuation">)</span> <span class="token operator">&amp;</span> <span class="token number">0xffff</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>加粗的地方就是注册21号键盘中断处理函数到IDT</p>
+<h5 id="head-h"><a href="#head-h" class="headerlink" title="head.h"></a>head.h</h5><pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token comment">/*naskfunc.asm*/</span>
+<span class="token keyword">void</span> <span class="token function">io_stihlt</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">void</span> <span class="token function">io_hlt</span><span class="token punctuation">(</span><span class="token keyword">void</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">void</span> <span class="token function">io_cli</span><span class="token punctuation">(</span><span class="token keyword">void</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">void</span> <span class="token function">io_sti</span><span class="token punctuation">(</span><span class="token keyword">void</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">int</span> <span class="token function">io_get8</span><span class="token punctuation">(</span><span class="token keyword">int</span> port<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">void</span> <span class="token function">io_set8</span><span class="token punctuation">(</span><span class="token keyword">int</span> port<span class="token punctuation">,</span> <span class="token keyword">int</span> data<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">void</span> <span class="token function">write_mem8</span><span class="token punctuation">(</span><span class="token keyword">int</span> addr<span class="token punctuation">,</span> <span class="token keyword">int</span> data<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">int</span> <span class="token function">io_load_eflags</span><span class="token punctuation">(</span><span class="token keyword">void</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">void</span> <span class="token function">io_store_eflags</span><span class="token punctuation">(</span><span class="token keyword">int</span> eflags<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">void</span> <span class="token function">load_gdtr</span><span class="token punctuation">(</span><span class="token keyword">int</span> limit<span class="token punctuation">,</span> <span class="token keyword">int</span> addr<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">void</span> <span class="token function">load_idtr</span><span class="token punctuation">(</span><span class="token keyword">int</span> limit<span class="token punctuation">,</span> <span class="token keyword">int</span> addr<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">void</span> <span class="token function">asm_inthandler21</span><span class="token punctuation">(</span><span class="token keyword">void</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">/* asmhead.nas */</span>
+<span class="token keyword">struct</span> <span class="token class-name">BOOTINFO</span> <span class="token punctuation">&#123;</span> <span class="token comment">/* 0x0ff0-0x0fff */</span>
+    <span class="token keyword">char</span> cyls<span class="token punctuation">;</span> <span class="token comment">/* 启动区读磁盘读到此为止 */</span>
+    <span class="token keyword">char</span> leds<span class="token punctuation">;</span> <span class="token comment">/* 启动时键盘的LED的状态 */</span>
+    <span class="token keyword">char</span> vmode<span class="token punctuation">;</span> <span class="token comment">/* 显卡模式为多少位彩色 */</span>
+    <span class="token keyword">char</span> reserve<span class="token punctuation">;</span>
+    <span class="token keyword">short</span> scrnx<span class="token punctuation">,</span> scrny<span class="token punctuation">;</span> <span class="token comment">/* 画面分辨率 */</span>
+    <span class="token keyword">char</span> <span class="token operator">*</span>vram<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">define</span> <span class="token macro-name">ADR_BOOTINFO</span> <span class="token expression"><span class="token number">0x00000ff0</span></span></span>
+
+<span class="token comment">/*graphic.c*/</span>
+<span class="token keyword">void</span> <span class="token function">init_palette</span><span class="token punctuation">(</span><span class="token keyword">void</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">void</span> <span class="token function">set_palette</span><span class="token punctuation">(</span><span class="token keyword">int</span> start<span class="token punctuation">,</span> <span class="token keyword">int</span> end<span class="token punctuation">,</span> <span class="token keyword">unsigned</span> <span class="token keyword">char</span> <span class="token operator">*</span>rgb<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">void</span> <span class="token function">boxfill8</span><span class="token punctuation">(</span><span class="token keyword">unsigned</span> <span class="token keyword">char</span> <span class="token operator">*</span>vram<span class="token punctuation">,</span> <span class="token keyword">int</span> xsize<span class="token punctuation">,</span> <span class="token keyword">unsigned</span> <span class="token keyword">char</span> c<span class="token punctuation">,</span> <span class="token keyword">int</span> x0<span class="token punctuation">,</span> <span class="token keyword">int</span> y0<span class="token punctuation">,</span> <span class="token keyword">int</span> x1<span class="token punctuation">,</span> <span class="token keyword">int</span> y1<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">void</span> <span class="token function">putfont8</span><span class="token punctuation">(</span><span class="token keyword">char</span> <span class="token operator">*</span>vram<span class="token punctuation">,</span> <span class="token keyword">int</span> xsize<span class="token punctuation">,</span> <span class="token keyword">int</span> x<span class="token punctuation">,</span> <span class="token keyword">int</span> y<span class="token punctuation">,</span> <span class="token keyword">char</span> c<span class="token punctuation">,</span> <span class="token keyword">char</span> <span class="token operator">*</span>font<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">void</span> <span class="token function">putfonts8_asc</span><span class="token punctuation">(</span><span class="token keyword">char</span> <span class="token operator">*</span>vram<span class="token punctuation">,</span> <span class="token keyword">int</span> xsize<span class="token punctuation">,</span> <span class="token keyword">int</span> x<span class="token punctuation">,</span> <span class="token keyword">int</span> y<span class="token punctuation">,</span> <span class="token keyword">char</span> c<span class="token punctuation">,</span> <span class="token keyword">unsigned</span> <span class="token keyword">char</span> <span class="token operator">*</span>s<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">/*font*/</span>
+<span class="token keyword">extern</span> <span class="token keyword">char</span> font<span class="token punctuation">[</span><span class="token number">4096</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+
+<span class="token comment">/* dsctbl.c */</span>
+<span class="token keyword">struct</span> <span class="token class-name">SEGMENT_DESCRIPTOR</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">short</span> limit_low<span class="token punctuation">,</span> base_low<span class="token punctuation">;</span>
+    <span class="token keyword">char</span> base_mid<span class="token punctuation">,</span> access_right<span class="token punctuation">;</span>
+    <span class="token keyword">char</span> limit_high<span class="token punctuation">,</span> base_high<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+<span class="token keyword">struct</span> <span class="token class-name">GATE_DESCRIPTOR</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">short</span> offset_low<span class="token punctuation">,</span> selector<span class="token punctuation">;</span>
+    <span class="token keyword">char</span> dw_count<span class="token punctuation">,</span> access_right<span class="token punctuation">;</span>
+    <span class="token keyword">short</span> offset_high<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+<span class="token keyword">void</span> <span class="token function">init_gdtidt</span><span class="token punctuation">(</span><span class="token keyword">void</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">void</span> <span class="token function">set_segmdesc</span><span class="token punctuation">(</span><span class="token keyword">struct</span> <span class="token class-name">SEGMENT_DESCRIPTOR</span> <span class="token operator">*</span>sd<span class="token punctuation">,</span> <span class="token keyword">unsigned</span> <span class="token keyword">int</span> limit<span class="token punctuation">,</span> <span class="token keyword">int</span> base<span class="token punctuation">,</span> <span class="token keyword">int</span> ar<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">void</span> <span class="token function">set_gatedesc</span><span class="token punctuation">(</span><span class="token keyword">struct</span> <span class="token class-name">GATE_DESCRIPTOR</span> <span class="token operator">*</span>gd<span class="token punctuation">,</span> <span class="token keyword">int</span> offset<span class="token punctuation">,</span> <span class="token keyword">int</span> selector<span class="token punctuation">,</span> <span class="token keyword">int</span> ar<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">define</span> <span class="token macro-name">ADR_IDT</span>            <span class="token expression"><span class="token number">0x0026f800</span></span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">define</span> <span class="token macro-name">LIMIT_IDT</span>        <span class="token expression"><span class="token number">0x000007ff</span></span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">define</span> <span class="token macro-name">ADR_GDT</span>            <span class="token expression"><span class="token number">0x00270000</span></span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">define</span> <span class="token macro-name">LIMIT_GDT</span>        <span class="token expression"><span class="token number">0x0000ffff</span></span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">define</span> <span class="token macro-name">ADR_BOTPAK</span>        <span class="token expression"><span class="token number">0x00280000</span></span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">define</span> <span class="token macro-name">LIMIT_BOTPAK</span>    <span class="token expression"><span class="token number">0x0007ffff</span></span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">define</span> <span class="token macro-name">AR_DATA32_RW</span>    <span class="token expression"><span class="token number">0x4092</span></span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">define</span> <span class="token macro-name">AR_CODE32_ER</span>    <span class="token expression"><span class="token number">0x409a</span></span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">define</span> <span class="token macro-name">AR_INTGATE32</span>    <span class="token expression"><span class="token number">0x008e</span></span></span>
+
+<span class="token comment">/* pic.c */</span>
+<span class="token keyword">void</span> <span class="token function">init_pic</span><span class="token punctuation">(</span><span class="token keyword">void</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">define</span> <span class="token macro-name">PIC0_ICW1</span>        <span class="token expression"><span class="token number">0x0020</span></span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">define</span> <span class="token macro-name">PIC0_OCW2</span>        <span class="token expression"><span class="token number">0x0020</span></span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">define</span> <span class="token macro-name">PIC0_IMR</span>        <span class="token expression"><span class="token number">0x0021</span></span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">define</span> <span class="token macro-name">PIC0_ICW2</span>        <span class="token expression"><span class="token number">0x0021</span></span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">define</span> <span class="token macro-name">PIC0_ICW3</span>        <span class="token expression"><span class="token number">0x0021</span></span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">define</span> <span class="token macro-name">PIC0_ICW4</span>        <span class="token expression"><span class="token number">0x0021</span></span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">define</span> <span class="token macro-name">PIC1_ICW1</span>        <span class="token expression"><span class="token number">0x00a0</span></span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">define</span> <span class="token macro-name">PIC1_OCW2</span>        <span class="token expression"><span class="token number">0x00a0</span></span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">define</span> <span class="token macro-name">PIC1_IMR</span>        <span class="token expression"><span class="token number">0x00a1</span></span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">define</span> <span class="token macro-name">PIC1_ICW2</span>        <span class="token expression"><span class="token number">0x00a1</span></span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">define</span> <span class="token macro-name">PIC1_ICW3</span>        <span class="token expression"><span class="token number">0x00a1</span></span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">define</span> <span class="token macro-name">PIC1_ICW4</span>        <span class="token expression"><span class="token number">0x00a1</span></span></span>
+
+<span class="token comment">/*interrupt.c*/</span>
+<span class="token keyword">void</span> <span class="token function">inthandler21</span><span class="token punctuation">(</span><span class="token keyword">int</span> <span class="token operator">*</span>esp<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h5 id="naskfunc-asm"><a href="#naskfunc-asm" class="headerlink" title="naskfunc.asm"></a>naskfunc.asm</h5><pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token punctuation">;</span> naskfunc
+<span class="token punctuation">;</span> <span class="token constant">TAB</span><span class="token operator">=</span><span class="token number">4</span>
+
+<span class="token punctuation">[</span><span class="token constant">FORMAT</span> <span class="token string">"WCOFF"</span><span class="token punctuation">]</span>                <span class="token punctuation">;</span> 制作目标文件的模式    
+<span class="token punctuation">[</span><span class="token constant">INSTRSET</span> <span class="token string">"i486p"</span><span class="token punctuation">]</span>                <span class="token punctuation">;</span> 使用到<span class="token number">486</span>为止的指令
+<span class="token punctuation">[</span><span class="token constant">BITS</span> <span class="token number">32</span><span class="token punctuation">]</span>                        <span class="token punctuation">;</span> <span class="token number">3</span>制作<span class="token number">32</span>位模式用的机器语言
+<span class="token punctuation">[</span><span class="token constant">FILE</span> <span class="token string">"naskfunc.asm"</span><span class="token punctuation">]</span>            <span class="token punctuation">;</span> 文件名
+    <span class="token class-name">GLOBAL</span> _io_hlt<span class="token punctuation">,</span>_write_mem8<span class="token punctuation">,</span>_io_cli<span class="token punctuation">,</span>_io_sti<span class="token punctuation">,</span>_io_get8<span class="token punctuation">,</span>_io_set8<span class="token punctuation">,</span>_io_stihlt
+    <span class="token class-name">GLOBAL</span> _io_load_eflags<span class="token punctuation">,</span>_io_store_eflags<span class="token punctuation">,</span>_asm_inthandler21
+    <span class="token class-name">GLOBAL</span>    _load_gdtr<span class="token punctuation">,</span> _load_idtr
+    <span class="token constant">EXTERN</span>    _inthandler21
+
+<span class="token punctuation">[</span><span class="token constant">SECTION</span> <span class="token punctuation">.</span>text<span class="token punctuation">]</span>
+
+_io_hlt<span class="token operator">:</span>    <span class="token punctuation">;</span> <span class="token keyword">void</span> <span class="token function">io_hlt</span><span class="token punctuation">(</span><span class="token keyword">void</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token constant">HLT</span>
+        <span class="token constant">RET</span>
+
+_io_cli<span class="token operator">:</span>    <span class="token punctuation">;</span> <span class="token keyword">void</span> <span class="token function">io_cli</span><span class="token punctuation">(</span><span class="token keyword">void</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token constant">CLI</span>
+        <span class="token constant">RET</span>
+
+_io_sti<span class="token operator">:</span>    <span class="token punctuation">;</span> <span class="token keyword">void</span> <span class="token function">io_sti</span><span class="token punctuation">(</span><span class="token keyword">void</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token constant">STI</span>
+        <span class="token constant">RET</span>
+
+_io_get8<span class="token operator">:</span>    <span class="token punctuation">;</span> <span class="token keyword">int</span> <span class="token function">io_get8</span><span class="token punctuation">(</span><span class="token keyword">int</span> port<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">MOV</span>        <span class="token constant">EDX</span><span class="token punctuation">,</span><span class="token punctuation">[</span><span class="token constant">ESP</span><span class="token operator">+</span><span class="token number">4</span><span class="token punctuation">]</span>        <span class="token punctuation">;</span> port
+        <span class="token class-name">MOV</span>        <span class="token constant">EAX</span><span class="token punctuation">,</span><span class="token number">0</span>
+        <span class="token class-name">IN</span>        <span class="token constant">AL</span><span class="token punctuation">,</span><span class="token constant">DX</span>
+        <span class="token constant">RET</span>
+
+_io_set8<span class="token operator">:</span>    <span class="token punctuation">;</span> <span class="token keyword">void</span> <span class="token function">io_set8</span><span class="token punctuation">(</span><span class="token keyword">int</span> port<span class="token punctuation">,</span> <span class="token keyword">int</span> data<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">MOV</span>        <span class="token constant">EDX</span><span class="token punctuation">,</span><span class="token punctuation">[</span><span class="token constant">ESP</span><span class="token operator">+</span><span class="token number">4</span><span class="token punctuation">]</span>        <span class="token punctuation">;</span> port
+        <span class="token class-name">MOV</span>        <span class="token constant">AL</span><span class="token punctuation">,</span><span class="token punctuation">[</span><span class="token constant">ESP</span><span class="token operator">+</span><span class="token number">8</span><span class="token punctuation">]</span>        <span class="token punctuation">;</span> data
+        <span class="token class-name">OUT</span>        <span class="token constant">DX</span><span class="token punctuation">,</span><span class="token constant">AL</span>
+        <span class="token constant">RET</span>
+
+_io_stihlt<span class="token operator">:</span>    <span class="token punctuation">;</span> <span class="token keyword">void</span> <span class="token function">io_stihlt</span><span class="token punctuation">(</span><span class="token keyword">void</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token constant">STI</span>
+        <span class="token constant">HLT</span>
+        <span class="token constant">RET</span>
+
+_write_mem8<span class="token operator">:</span> <span class="token punctuation">;</span> <span class="token keyword">void</span> <span class="token function">write_mem8</span><span class="token punctuation">(</span><span class="token keyword">int</span> addr<span class="token punctuation">,</span> <span class="token keyword">int</span> data<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">MOV</span> <span class="token constant">ECX</span><span class="token punctuation">,</span><span class="token punctuation">[</span><span class="token constant">ESP</span><span class="token operator">+</span><span class="token number">4</span><span class="token punctuation">]</span> <span class="token punctuation">;</span> taking content of add
+        <span class="token class-name">MOV</span> <span class="token constant">AL</span><span class="token punctuation">,</span><span class="token punctuation">[</span><span class="token constant">ESP</span><span class="token operator">+</span><span class="token number">8</span><span class="token punctuation">]</span> <span class="token punctuation">;</span> taking content of data
+        <span class="token constant">MOV</span> <span class="token punctuation">[</span><span class="token constant">ECX</span><span class="token punctuation">]</span><span class="token punctuation">,</span><span class="token constant">AL</span> <span class="token punctuation">;</span> <span class="token operator">*</span>ecx<span class="token operator">=</span>al
+        <span class="token constant">RET</span>
+_io_load_eflags<span class="token operator">:</span>    <span class="token punctuation">;</span> <span class="token keyword">int</span> <span class="token function">io_load_eflags</span><span class="token punctuation">(</span><span class="token keyword">void</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token constant">PUSHFD</span>        <span class="token punctuation">;</span> <span class="token constant">PUSH</span> <span class="token constant">EFLAGS</span> 
+        <span class="token constant">POP</span>        <span class="token constant">EAX</span>
+        <span class="token constant">RET</span>
+
+_io_store_eflags<span class="token operator">:</span>    <span class="token punctuation">;</span> <span class="token keyword">void</span> <span class="token function">io_store_eflags</span><span class="token punctuation">(</span><span class="token keyword">int</span> eflags<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">MOV</span>        <span class="token constant">EAX</span><span class="token punctuation">,</span><span class="token punctuation">[</span><span class="token constant">ESP</span><span class="token operator">+</span><span class="token number">4</span><span class="token punctuation">]</span>
+        <span class="token constant">PUSH</span>    <span class="token class-name">EAX</span>
+        <span class="token constant">POPFD</span>        <span class="token punctuation">;</span> <span class="token constant">POP</span> <span class="token constant">EFLAGS</span> 
+        <span class="token constant">RET</span>
+_load_gdtr<span class="token operator">:</span>        <span class="token punctuation">;</span> <span class="token keyword">void</span> <span class="token function">load_gdtr</span><span class="token punctuation">(</span><span class="token keyword">int</span> limit<span class="token punctuation">,</span> <span class="token keyword">int</span> addr<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">MOV</span>        <span class="token constant">AX</span><span class="token punctuation">,</span><span class="token punctuation">[</span><span class="token constant">ESP</span><span class="token operator">+</span><span class="token number">4</span><span class="token punctuation">]</span>        <span class="token punctuation">;</span> limit
+        <span class="token constant">MOV</span>        <span class="token punctuation">[</span><span class="token constant">ESP</span><span class="token operator">+</span><span class="token number">6</span><span class="token punctuation">]</span><span class="token punctuation">,</span><span class="token constant">AX</span>
+        <span class="token constant">LGDT</span>    <span class="token punctuation">[</span><span class="token constant">ESP</span><span class="token operator">+</span><span class="token number">6</span><span class="token punctuation">]</span>
+        <span class="token constant">RET</span>
+
+_load_idtr<span class="token operator">:</span>        <span class="token punctuation">;</span> <span class="token keyword">void</span> <span class="token function">load_idtr</span><span class="token punctuation">(</span><span class="token keyword">int</span> limit<span class="token punctuation">,</span> <span class="token keyword">int</span> addr<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">MOV</span>        <span class="token constant">AX</span><span class="token punctuation">,</span><span class="token punctuation">[</span><span class="token constant">ESP</span><span class="token operator">+</span><span class="token number">4</span><span class="token punctuation">]</span>        <span class="token punctuation">;</span> limit
+        <span class="token constant">MOV</span>        <span class="token punctuation">[</span><span class="token constant">ESP</span><span class="token operator">+</span><span class="token number">6</span><span class="token punctuation">]</span><span class="token punctuation">,</span><span class="token constant">AX</span>
+        <span class="token constant">LIDT</span>    <span class="token punctuation">[</span><span class="token constant">ESP</span><span class="token operator">+</span><span class="token number">6</span><span class="token punctuation">]</span>
+        <span class="token constant">RET</span>
+_asm_inthandler21<span class="token operator">:</span>
+        <span class="token constant">PUSH</span>    <span class="token constant">ES</span>
+        <span class="token constant">PUSH</span>    <span class="token constant">DS</span>
+        <span class="token constant">PUSHAD</span>
+        <span class="token class-name">MOV</span>        <span class="token constant">EAX</span><span class="token punctuation">,</span><span class="token constant">ESP</span>
+        <span class="token constant">PUSH</span>    <span class="token constant">EAX</span>
+        <span class="token class-name">MOV</span>        <span class="token constant">AX</span><span class="token punctuation">,</span><span class="token constant">SS</span>
+        <span class="token class-name">MOV</span>        <span class="token constant">DS</span><span class="token punctuation">,</span><span class="token constant">AX</span>
+        <span class="token class-name">MOV</span>        <span class="token constant">ES</span><span class="token punctuation">,</span><span class="token constant">AX</span>
+        <span class="token constant">CALL</span>    _inthandler21
+        <span class="token constant">POP</span>        <span class="token constant">EAX</span>
+        <span class="token constant">POPAD</span>
+        <span class="token constant">POP</span>        <span class="token constant">DS</span>
+        <span class="token constant">POP</span>        <span class="token constant">ES</span>
+        <span class="token constant">IRETD</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>加粗的地方就是要修改的地方</p>
+<p>IDT–&gt;_asm_inthandler21–&gt;_inthandler21函数</p>
+<h5 id="新建pic-c"><a href="#新建pic-c" class="headerlink" title="新建pic.c"></a>新建pic.c</h5><pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token comment">/*初始化关系 */</span>
+
+
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">"include/head.h"</span></span>
+
+
+<span class="token keyword">void</span> <span class="token function">init_pic</span><span class="token punctuation">(</span><span class="token keyword">void</span><span class="token punctuation">)</span>
+<span class="token comment">/* PIC初始化 */</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token function">io_set8</span><span class="token punctuation">(</span>PIC0_IMR<span class="token punctuation">,</span>  <span class="token number">0xff</span>  <span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">/* 禁止所有中断 */</span>
+    <span class="token function">io_set8</span><span class="token punctuation">(</span>PIC1_IMR<span class="token punctuation">,</span>  <span class="token number">0xff</span>  <span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">/* 禁止所有中断 */</span>
+
+    <span class="token function">io_set8</span><span class="token punctuation">(</span>PIC0_ICW1<span class="token punctuation">,</span> <span class="token number">0x11</span>  <span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">/* 边缘触发模式（edge trigger mode） */</span>
+    <span class="token function">io_set8</span><span class="token punctuation">(</span>PIC0_ICW2<span class="token punctuation">,</span> <span class="token number">0x20</span>  <span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">/* IRQ0-7由INT20-27接收 */</span>
+    <span class="token function">io_set8</span><span class="token punctuation">(</span>PIC0_ICW3<span class="token punctuation">,</span> <span class="token number">1</span> <span class="token operator">&lt;&lt;</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">/* PIC1由IRQ2相连 */</span>
+    <span class="token function">io_set8</span><span class="token punctuation">(</span>PIC0_ICW4<span class="token punctuation">,</span> <span class="token number">0x01</span>  <span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">/* 无缓冲区模式 */</span>
+
+    <span class="token function">io_set8</span><span class="token punctuation">(</span>PIC1_ICW1<span class="token punctuation">,</span> <span class="token number">0x11</span>  <span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">/* 边缘触发模式（edge trigger mode） */</span>
+    <span class="token function">io_set8</span><span class="token punctuation">(</span>PIC1_ICW2<span class="token punctuation">,</span> <span class="token number">0x28</span>  <span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">/* IRQ8-15由INT28-2f接收 */</span>
+    <span class="token function">io_set8</span><span class="token punctuation">(</span>PIC1_ICW3<span class="token punctuation">,</span> <span class="token number">2</span>     <span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">/* PIC1由IRQ2连接 */</span>
+    <span class="token function">io_set8</span><span class="token punctuation">(</span>PIC1_ICW4<span class="token punctuation">,</span> <span class="token number">0x01</span>  <span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">/* 无缓冲区模式 */</span>
+
+    <span class="token function">io_set8</span><span class="token punctuation">(</span>PIC0_IMR<span class="token punctuation">,</span>  <span class="token number">0xfb</span>  <span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">/* 11111011 PIC1以外全部禁止 */</span>
+    <span class="token function">io_set8</span><span class="token punctuation">(</span>PIC1_IMR<span class="token punctuation">,</span>  <span class="token number">0xff</span>  <span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">/* 11111111 禁止所有中断 */</span>
+
+    <span class="token keyword">return</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h5 id="创建interrupt-c"><a href="#创建interrupt-c" class="headerlink" title="创建interrupt.c"></a>创建interrupt.c</h5><pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">"include/head.h"</span></span>
+
+
+<span class="token keyword">void</span> <span class="token function">inthandler21</span><span class="token punctuation">(</span><span class="token keyword">int</span> <span class="token operator">*</span>esp<span class="token punctuation">)</span>
+<span class="token comment">/* 来自PS/2键盘的中断 */</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token keyword">struct</span> <span class="token class-name">BOOTINFO</span> <span class="token operator">*</span>binfo <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">struct</span> <span class="token class-name">BOOTINFO</span> <span class="token operator">*</span><span class="token punctuation">)</span> ADR_BOOTINFO<span class="token punctuation">;</span>
+    <span class="token function">boxfill8</span><span class="token punctuation">(</span>binfo<span class="token operator">-></span>vram<span class="token punctuation">,</span> binfo<span class="token operator">-></span>scrnx<span class="token punctuation">,</span> <span class="token number">7</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">32</span> <span class="token operator">*</span> <span class="token number">8</span> <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">15</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">putfonts8_asc</span><span class="token punctuation">(</span>binfo<span class="token operator">-></span>vram<span class="token punctuation">,</span> binfo<span class="token operator">-></span>scrnx<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token string">"INT 21 (IRQ-1) :PS/2 keyboard"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token punctuation">;</span><span class="token punctuation">;</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token function">io_hlt</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h5 id="最后修改mian-c"><a href="#最后修改mian-c" class="headerlink" title="最后修改mian.c"></a>最后修改mian.c</h5><pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">"include/head.h"</span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;string.h></span></span>
+
+<span class="token keyword">struct</span> <span class="token class-name">BOOTINFO</span> <span class="token operator">*</span>binfo <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">struct</span> <span class="token class-name">BOOTINFO</span> <span class="token operator">*</span><span class="token punctuation">)</span> ADR_BOOTINFO<span class="token punctuation">;</span>
+
+<span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token keyword">void</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+    <span class="token keyword">int</span> i<span class="token punctuation">;</span><span class="token keyword">char</span> s<span class="token punctuation">[</span><span class="token number">256</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+
+    <span class="token function">init_gdtidt</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">init_pic</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">io_sti</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+
+    <span class="token function">init_palette</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token function">boxfill8</span><span class="token punctuation">(</span>binfo<span class="token operator">-></span>vram<span class="token punctuation">,</span> binfo<span class="token operator">-></span>scrnx<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">,</span>binfo<span class="token operator">-></span>scrnx<span class="token punctuation">,</span> binfo<span class="token operator">-></span>scrny<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">sprintf</span><span class="token punctuation">(</span>s<span class="token punctuation">,</span> <span class="token string">"scrnx = %d"</span><span class="token punctuation">,</span> binfo<span class="token operator">-></span>scrnx<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">putfonts8_asc</span><span class="token punctuation">(</span>binfo<span class="token operator">-></span>vram<span class="token punctuation">,</span> binfo<span class="token operator">-></span>scrnx<span class="token punctuation">,</span> <span class="token number">8</span><span class="token punctuation">,</span> <span class="token number">8</span><span class="token punctuation">,</span> <span class="token number">7</span><span class="token punctuation">,</span> s<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">io_set8</span><span class="token punctuation">(</span>PIC0_IMR<span class="token punctuation">,</span> <span class="token number">0xf9</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">/* 开放PIC1和键盘中断(11111001) */</span>
+
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token punctuation">;</span><span class="token punctuation">;</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token function">io_hlt</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+<p>别忘了编译之改一下<code>makefile</code></p>
+<h5 id="运行："><a href="#运行：" class="headerlink" title="运行："></a>运行：</h5><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token builtin class-name">cd</span> class02
+<span class="token punctuation">..</span><span class="token punctuation">\</span>z_tools<span class="token punctuation">\</span>make.exe run<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<figure class="mdui-img-fluid"><img src="/images/os08.png"class="mdui-img-rounded" loading="lazy"></figure>
+
+        
+        <blockquote class="mdui-m-x-0 mdui-m-t-4">
+    <strong>
+        Author: <a href="/about/">Z Chan</a><br>
+        URL: <a href="https://zchancode.github.io/2023/04/19/0x06_my-os/">https://zchancode.github.io/2023/04/19/0x06_my-os/</a><br>
+        
+            This work is licensed under a <a rel="license noopener" target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> .
+        
+    </strong>
+</blockquote>
+        
+    </div>
+    
+</article>
+<nav class="mdui-theme-layout-light mdui-color-transparent mdui-row mdui-m-b-2">
+    
+        <div class="mdui-col-xs-12 mdui-m-b-2">
+            <a class="extend prev mdui-btn mdui-ripple mdui-float-left mdui-text-truncate" rel="prev"
+                style="max-width: 100%" href="/2023/04/19/0x07_my-os/">
+                <i class="mdui-icon mdui-icon-left material-icons">arrow_back</i>0x07_自制操作系统My-OS实现键盘输出字符到屏幕
+            </a>
+        </div>
+    
+        <div class="mdui-col-xs-12">
+            <a class="extend next mdui-btn mdui-ripple mdui-float-right mdui-text-truncate" rel="next"
+                style="max-width: 100%" href="/2023/04/19/0x05_my-os/">
+                <i class="mdui-icon mdui-icon-right material-icons">arrow_forward</i>0x05_My-OS显示字符串和任意参数
+            </a>
+        </div>
+    
+</nav>
+
+    </div>
+    <a href="#" class="mdui-fab mdui-fab-fixed mdui-hidden-xs mdui-color-theme-accent mdui-ripple"><i class="mdui-icon material-icons">keyboard_arrow_up</i></a>
+
+<script src="https://cdn.jsdelivr.net/npm/mdui@1.0.2/dist/js/mdui.min.js"></script>
+
+
+<script>
+    var $ = mdui.$;
+    function init(){
+        //
+    }
+    window.addEventListener("load", () => {
+        //
+        init()
+    }, {once: true});
+</script>
+
+</body>
+</html>

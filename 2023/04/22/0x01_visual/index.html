@@ -37,13 +37,17 @@
     
 </style>
     
-    <title>Archives: 2023-5 | Chan&#39;s blog</title>
-    <link rel="canonical" href="https://zchancode.github.io/archives/2023/05/">
-    <meta property="og:type" content="website">
-<meta property="og:title" content="Chan&#39;s blog">
-<meta property="og:url" content="https://zchancode.github.io/archives/2023/05/index.html">
+    <title>0x01_Android使用Ceres1.14 | Chan&#39;s blog</title>
+    <link rel="canonical" href="https://zchancode.github.io/2023/04/22/0x01_visual/">
+    <meta name="description" content="Ceres 1.14.0自己去仓库下载github上有镜像 环境需求：You will need Android NDK r15 or higher to build Ceres solver.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="0x01_Android使用Ceres1.14">
+<meta property="og:url" content="https://zchancode.github.io/2023/04/22/0x01_visual/index.html">
 <meta property="og:site_name" content="Chan&#39;s blog">
+<meta property="og:description" content="Ceres 1.14.0自己去仓库下载github上有镜像 环境需求：You will need Android NDK r15 or higher to build Ceres solver.">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2023-04-22T07:09:00.000Z">
+<meta property="article:modified_time" content="2023-04-23T13:33:30.000Z">
 <meta property="article:author" content="Z Chan">
 <meta name="twitter:card" content="summary">
 <meta name="generator" content="Hexo 6.3.0"></head>
@@ -115,22 +119,20 @@
 </aside>
     </div>
     <div class="mdui-container-fluid mdui-center" style="max-width:720px">
-        <div class="mdui-theme-layout-light mdui-color-transparent">
-
-    <section class="mdui-card mdui-hoverable mdui-shadow-1 mdui-m-y-2" style="opacity: 1; border-radius: 4px">
+        <article class="mdui-card mdui-hoverable mdui-shadow-1 mdui-m-y-2" style="opacity: 1; border-radius: 4px">
     
     <div class="mdui-card-primary mdui-ripple">
     <div class="mdui-card-primary-title">
-        <a role="heading" aria-level="1" class="mdui-text-color-theme-text" href="/2023/05/09/0x00_youtube/">0x00_youtube project introduction</a>
+        <a role="heading" aria-level="1" class="mdui-text-color-theme-text" >0x01_Android使用Ceres1.14</a>
         
-        <small> <a class="mdui-text-color-theme-text category-link" href="/categories/Youtube-Project/">Youtube Project</a></small>
+        <small> <a class="mdui-text-color-theme-text category-link" href="/categories/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89/">机器视觉</a></small>
         
     </div>
     <div class="mdui-card-primary-subtitle mdui-typo">
         
-        <span mdui-tooltip="{content:'Created: 2023-05-09 12:02<br>Updated: 2023-05-09 03:50'}">2023-05-09 -</span>
+        <span mdui-tooltip="{content:'Created: 2023-04-22 03:09<br>Updated: 2023-04-23 09:33'}">2023-04-22 -</span>
         
-            <span>2023/05/09/0x00_youtube/</span>
+            <span>2023/04/22/0x01_visual/</span>
         
     </div>
 </div>
@@ -139,15 +141,56 @@
     <div class="mdui-divider"></div>
     <div class="mdui-card-content mdui-typo">
         
-            <h5 id="Which-is-introduction-of-my-project-about-video-media-Here-I-am-going-to-tell-you-What-am-I-going-to-do"><a href="#Which-is-introduction-of-my-project-about-video-media-Here-I-am-going-to-tell-you-What-am-I-going-to-do" class="headerlink" title="Which is introduction of my project about video media. Here I am going to tell you What am I going to do."></a>Which is introduction of my project about video media. Here I am going to tell you What am I going to do.</h5>
-            
-            <a class="mdui-btn mdui-btn-block mdui-ripple" href="/2023/05/09/0x00_youtube/">Read more</a>
+        <p>Ceres 1.14.0自己去仓库下载github上有镜像</p>
+<p>环境需求：<br>You will need Android NDK r15 or higher to build Ceres solver.</p>
+<span id="more"></span>
+<p>eigen3我当时编译的时候自己先交叉编译了eigen3，这个东西好像只有头文件，好像不存在移植，都是通用的</p>
+<h5 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h5><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">cmake
+<span class="token parameter variable">-DCMAKE_TOOLCHAIN_FILE</span><span class="token operator">=</span><span class="token variable">$NDK_DIR</span>/build/cmake/android.toolchain.cmake
+<span class="token parameter variable">-DEIGEN_INCLUDE_DIR</span><span class="token operator">=</span>/path/to/eigen/header 
+<span class="token parameter variable">-DANDROID_ABI</span><span class="token operator">=</span>armeabi-v7a 
+<span class="token parameter variable">-DANDROID_STL</span><span class="token operator">=</span>c++_shared 
+<span class="token parameter variable">-DANDROID_NATIVE_API_LEVEL</span><span class="token operator">=</span>android-24 
+<span class="token parameter variable">-DBUILD_SHARED_LIBS</span><span class="token operator">=</span>ON 
+<span class="token parameter variable">-DMINIGLOG</span><span class="token operator">=</span>ON 
+<span class="token operator">&lt;</span>PATH_TO_CERES_SOURCE<span class="token operator">></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>执行如上命令后，首先会遇到如下错误：<code>undefined reference to &#39;__android_log_write&#39;</code></strong></p>
+<p>解决方法：打开<code>[ceres]/internal/ceres/minglog/glog/logging.h</code>，搜索<code>__android_log_write</code>，将带有这个函数的几行注释掉。</p>
+<p><strong>重新编译，最后会报错误：<code>&#39;libc++_shared.so&#39; no found</code></strong></p>
+<p>解决方法：这个错误无关紧要，可以看到当前目录下的lib目录已经生成了我们想要的库文件。</p>
+<h5 id="编译结果"><a href="#编译结果" class="headerlink" title="编译结果"></a>编译结果</h5><p>自己找一下应该有头文件和so文件</p>
+
+        
+        <blockquote class="mdui-m-x-0 mdui-m-t-4">
+    <strong>
+        Author: <a href="/about/">Z Chan</a><br>
+        URL: <a href="https://zchancode.github.io/2023/04/22/0x01_visual/">https://zchancode.github.io/2023/04/22/0x01_visual/</a><br>
+        
+            This work is licensed under a <a rel="license noopener" target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> .
+        
+    </strong>
+</blockquote>
         
     </div>
     
-</section>
-
-</div>
+</article>
+<nav class="mdui-theme-layout-light mdui-color-transparent mdui-row mdui-m-b-2">
+    
+        <div class="mdui-col-xs-12 mdui-m-b-2">
+            <a class="extend prev mdui-btn mdui-ripple mdui-float-left mdui-text-truncate" rel="prev"
+                style="max-width: 100%" href="/2023/04/23/0x01_aosp/">
+                <i class="mdui-icon mdui-icon-left material-icons">arrow_back</i>0x01_编译安卓源码
+            </a>
+        </div>
+    
+        <div class="mdui-col-xs-12">
+            <a class="extend next mdui-btn mdui-ripple mdui-float-right mdui-text-truncate" rel="next"
+                style="max-width: 100%" href="/2023/04/21/0x02_linux/">
+                <i class="mdui-icon mdui-icon-right material-icons">arrow_forward</i>0x01_RTX1650Ti cuda11.2 cudnn8.1 tensorflow2.8.0 pytorch1.10.0
+            </a>
+        </div>
+    
+</nav>
 
     </div>
     <a href="#" class="mdui-fab mdui-fab-fixed mdui-hidden-xs mdui-color-theme-accent mdui-ripple"><i class="mdui-icon material-icons">keyboard_arrow_up</i></a>

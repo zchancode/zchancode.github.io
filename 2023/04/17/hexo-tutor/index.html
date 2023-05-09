@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+    <meta charset="utf-8">
+<meta name="renderer" content="webkit">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+
+
+    <link rel="dns-prefetch" //cdn.jsdelivr.net>
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdui@1.0.2/dist/css/mdui.min.css">
+
+
+
+    
+<link rel="stylesheet" href="/css/prism-m.css">
+
+    
+
+
+
+<meta name="theme-color" content="#3F51B5">
+
+
+<style>
+    html,body{scroll-behavior:smooth;min-height:100vh}
+    blockquote>strong>a{word-break:break-all}
+    .mdui-hoverable:hover,.mdui-hoverable:focus{-webkit-box-shadow:0 5px 5px -3px rgba(0,0,0,.2),0 8px 10px 1px rgba(0,0,0,.14),0 3px 14px 2px rgba(0,0,0,.12) !important;box-shadow:0 5px 5px -3px rgba(0,0,0,.2),0 8px 10px 1px rgba(0,0,0,.14),0 3px 14px 2px rgba(0,0,0,.12) !important;}
+    .mdui-card-primary-title a{text-decoration:none !important}
+    .page-number{display:none !important}
+    .mdui-container-fluid{transition:opacity .4s}
+    
+        body{background-color: #f6f6f6}
+
+    
+</style>
+    
+    <title>How to run hexo and post article | Chan&#39;s blog</title>
+    <link rel="canonical" href="https://zchancode.github.io/2023/04/17/hexo-tutor/">
+    <meta name="description" content="I’m gonna tell you how to run hexo in your debian server. It’s quite simple just according my steps install nodejs envhexo rely on nodejs.finding suitable version according to what sorts of platformx8">
+<meta property="og:type" content="article">
+<meta property="og:title" content="How to run hexo and post article">
+<meta property="og:url" content="https://zchancode.github.io/2023/04/17/hexo-tutor/index.html">
+<meta property="og:site_name" content="Chan&#39;s blog">
+<meta property="og:description" content="I’m gonna tell you how to run hexo in your debian server. It’s quite simple just according my steps install nodejs envhexo rely on nodejs.finding suitable version according to what sorts of platformx8">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2023-04-17T14:38:00.000Z">
+<meta property="article:modified_time" content="2023-04-19T03:38:04.000Z">
+<meta property="article:author" content="Z Chan">
+<meta name="twitter:card" content="summary">
+<meta name="generator" content="Hexo 6.3.0"></head>
+<body class="mdui-theme-primary-indigo mdui-theme-accent-pink mdui-appbar-with-toolbar ">
+    <div class="mdui-theme-layout-light">
+    <header id="appbar" class="mdui-appbar mdui-appbar-fixed mdui-shadow-0 mdui-appbar-scroll-hide">
+    <div class="mdui-toolbar">
+        <button mdui-drawer="{target: '.mdui-drawer'}" class="mdui-btn mdui-btn-icon mdui-ripple"><i class="mdui-icon material-icons">menu</i></button>
+        <a href="/" class="mdui-typo-title">Chan&#39;s blog</a>
+        <div class="mdui-toolbar-spacer"></div>
+        
+        <a href="/search/" class="mdui-btn mdui-btn-icon mdui-ripple"><i class="mdui-icon material-icons">search</i></a>
+        
+    </div>
+</header>
+    <aside class="mdui-drawer mdui-drawer-close">
+    <nav class="mdui-list" mdui-collapse="{accordion: true}">
+        <a href="/about/"  class="mdui-list-item mdui-ripple">
+            <div class="mdui-list-item-avatar">
+                
+                <i class="mdui-color-theme-primary mdui-icon material-icons">person</i>
+                
+            </div>
+            <div class="mdui-list-item-content">Z Chan</div>
+        </a>
+        <div class="mdui-divider"></div>
+        
+        <a href="/" class="mdui-list-item mdui-ripple">
+            <i class="mdui-list-item-icon mdui-icon material-icons">home</i>
+            <div class="mdui-list-item-content">Home</div>
+        </a>
+        
+        <div class="mdui-collapse-item">
+            <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+                <i class="mdui-list-item-icon mdui-icon material-icons">inbox</i>
+                <div class="mdui-list-item-content">Archives</div>
+                <i class="mdui-collapse-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+            </div>
+            <div class="mdui-collapse-item-body mdui-list mdui-list-dense">
+                <a class="mdui-list-item mdui-ripple m-link" href="/archives/2023/05/">May 2023</a><a class="mdui-list-item mdui-ripple m-link" href="/archives/2023/04/">April 2023</a>
+            </div>
+        </div>
+        
+        <div class="mdui-collapse-item">
+            <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+                <i class="mdui-list-item-icon mdui-icon material-icons">apps</i>
+                <div class="mdui-list-item-content">Categories</div>
+                <i class="mdui-collapse-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+            </div>
+            <div class="mdui-collapse-item-body mdui-list mdui-list-dense">
+                <a class="mdui-list-item mdui-ripple m-link" href="/categories/Android%E5%B0%8F%E9%A1%B9%E7%9B%AE/">Android小项目</a><a class="mdui-list-item mdui-ripple m-link" href="/categories/Android%E5%B7%A5%E5%85%B7%E7%B1%BB/">Android工具类</a><a class="mdui-list-item mdui-ripple m-link" href="/categories/Android%E6%BA%90%E7%A0%81%E7%A0%94%E7%A9%B6/">Android源码研究</a><a class="mdui-list-item mdui-ripple m-link" href="/categories/Android%E7%8E%A9%E6%9C%BA/">Android玩机</a><a class="mdui-list-item mdui-ripple m-link" href="/categories/Hexo%E5%8D%9A%E5%AE%A2%E6%95%99%E7%A8%8B/">Hexo博客教程</a><a class="mdui-list-item mdui-ripple m-link" href="/categories/Linux/">Linux</a><a class="mdui-list-item mdui-ripple m-link" href="/categories/Youtube-Project/">Youtube Project</a><a class="mdui-list-item mdui-ripple m-link" href="/categories/%E5%AD%A6%E6%9C%AF%E8%AE%BA%E6%96%87/">学术论文</a><a class="mdui-list-item mdui-ripple m-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><a class="mdui-list-item mdui-ripple m-link" href="/categories/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89/">机器视觉</a><a class="mdui-list-item mdui-ripple m-link" href="/categories/%E8%87%AA%E5%88%B6%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">自制操作系统</a>
+            </div>
+        </div>
+        
+    </nav>
+    <div class="mdui-divider"></div>
+    <footer class="mdui-m-l-2 mdui-m-t-1 mdui-typo mdui-text-color-theme-disabled">
+        <p class="mdui-m-b-0">
+            
+            ©
+            2023 Z Chan<br>
+            
+            Powered by <a href="https://hexo.io/" rel="noreferrer" target="_blank">Hexo</a><br>
+            
+            Theme - <a href="https://github.com/kwaa/hexo-theme-m" rel="noreferrer" target="_blank"
+                mdui-tooltip="{position:'right', content: 'by 藍+85CD'}">M</a></p>
+            
+    </footer>
+</aside>
+    </div>
+    <div class="mdui-container-fluid mdui-center" style="max-width:720px">
+        <article class="mdui-card mdui-hoverable mdui-shadow-1 mdui-m-y-2" style="opacity: 1; border-radius: 4px">
+    
+    <div class="mdui-card-primary mdui-ripple">
+    <div class="mdui-card-primary-title">
+        <a role="heading" aria-level="1" class="mdui-text-color-theme-text" >How to run hexo and post article</a>
+        
+        <small> <a class="mdui-text-color-theme-text category-link" href="/categories/Hexo%E5%8D%9A%E5%AE%A2%E6%95%99%E7%A8%8B/">Hexo博客教程</a></small>
+        
+    </div>
+    <div class="mdui-card-primary-subtitle mdui-typo">
+        
+        <span mdui-tooltip="{content:'Created: 2023-04-17 10:38<br>Updated: 2023-04-19 11:38'}">2023-04-17 -</span>
+        
+            <span>2023/04/17/hexo-tutor/</span>
+        
+    </div>
+</div>
+    
+    
+    <div class="mdui-divider"></div>
+    <div class="mdui-card-content mdui-typo">
+        
+        <p>I’m gonna tell you how to run <code>hexo</code> in your debian server. It’s quite simple just according my steps</p>
+<h5 id="install-nodejs-env"><a href="#install-nodejs-env" class="headerlink" title="install nodejs env"></a>install nodejs env</h5><p><code>hexo</code> rely on <a target="_blank" rel="noopener" href="https://nodejs.org/en/download">nodejs</a>.<br>finding suitable version according to what sorts of <code>platform</code>x86 or x64 you use<br>extra it and install.</p>
+<span id="more"></span>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">tar</span> <span class="token parameter variable">-xvf</span> node-v12.15.0-linux-x64.tar.gz
+<span class="token function">mv</span> node-v12.15.0-linux-x64 nodejs
+<span class="token function">ln</span> <span class="token parameter variable">-s</span> nodejs/bin/npm /usr/bin/npm
+<span class="token function">ln</span> <span class="token parameter variable">-s</span> nodejs/bin/node /usr/bin/node<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h5 id="install-hexo-via-npm"><a href="#install-hexo-via-npm" class="headerlink" title="install hexo via npm"></a>install hexo via npm</h5><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">npm</span> <span class="token function">install</span> <span class="token parameter variable">-g</span> hexo-cli
+<span class="token function">ln</span> <span class="token parameter variable">-s</span> nodejs/bin/hexo /bin/hexo<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h5 id="create-your-site"><a href="#create-your-site" class="headerlink" title="create your site"></a>create your site</h5><pre class="line-numbers language-none"><code class="language-none">mkdir hexo
+cd hexo
+hexo init
+hexo g
+hexo s -p 90<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h5 id="close-ufw-or-enable-port-90"><a href="#close-ufw-or-enable-port-90" class="headerlink" title="close ufw or enable port 90"></a>close ufw or enable port 90</h5><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">ufw disable<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>or</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">ufw allow <span class="token number">90</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>Finally you can see your site in the address<code>http://ip:90</code></p>
+<h5 id="post-article"><a href="#post-article" class="headerlink" title="post article"></a>post article</h5><p>your article be saved in <code>hexo/source/_posts</code> by <code>.md</code><br>you can try to create a <code>test.md</code> file with <code>nano</code> or <code>vim</code></p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">---
+title: How to run hexo and post article
+date: 2023-04-17 22:38
+categories: hexo
+---
+`hello md`<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>and then refresh your site. you could see your article you just post</p>
+<h5 id="post-article-via-upload-md"><a href="#post-article-via-upload-md" class="headerlink" title="post article via upload md"></a>post article via upload md</h5><p>as you see it’s complex to post a article. So I create a tool to upload md file. you need build it in fresh</p>
+<p>On your local machine</p>
+<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;iostream></span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;fstream></span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;sys/socket.h></span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;netinet/in.h></span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;arpa/inet.h></span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;unistd.h></span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;string></span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;cstring></span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;stdio.h></span></span>
+
+<span class="token keyword">using</span> <span class="token keyword">namespace</span> std<span class="token punctuation">;</span>
+
+<span class="token keyword">struct</span> <span class="token class-name">FileInfo</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">char</span> filename<span class="token punctuation">[</span><span class="token number">256</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+    size_t file_size<span class="token punctuation">;</span>
+    <span class="token keyword">bool</span> is_delete<span class="token punctuation">;</span>  <span class="token comment">// 新增的字段</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token keyword">int</span> argc<span class="token punctuation">,</span> <span class="token keyword">char</span><span class="token operator">*</span> argv<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>argc <span class="token operator">&lt;</span> <span class="token number">2</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        cerr <span class="token operator">&lt;&lt;</span> <span class="token string">"Usage: "</span> <span class="token operator">&lt;&lt;</span> argv<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">&lt;&lt;</span> <span class="token string">" [-d] &lt;filename>"</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+
+    FileInfo send_file<span class="token punctuation">;</span>  <span class="token comment">// 文件信息结构体</span>
+    send_file<span class="token punctuation">.</span>is_delete <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span> <span class="token comment">// 初始化删除标记为 false</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">strcmp</span><span class="token punctuation">(</span>argv<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token string">"-d"</span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token comment">// 判断是否为删除操作</span>
+        send_file<span class="token punctuation">.</span>is_delete <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+        <span class="token function">strcpy</span><span class="token punctuation">(</span>send_file<span class="token punctuation">.</span>filename<span class="token punctuation">,</span> argv<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
+        <span class="token function">strcpy</span><span class="token punctuation">(</span>send_file<span class="token punctuation">.</span>filename<span class="token punctuation">,</span> argv<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token comment">// 打开文件</span>
+    ifstream <span class="token function">file</span><span class="token punctuation">(</span>send_file<span class="token punctuation">.</span>filename<span class="token punctuation">,</span> ios<span class="token double-colon punctuation">::</span>binary <span class="token operator">|</span> ios<span class="token double-colon punctuation">::</span>ate<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>file<span class="token punctuation">.</span><span class="token function">is_open</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        cerr <span class="token operator">&lt;&lt;</span> <span class="token string">"Failed to open file: "</span> <span class="token operator">&lt;&lt;</span> send_file<span class="token punctuation">.</span>filename <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    send_file<span class="token punctuation">.</span>file_size <span class="token operator">=</span> file<span class="token punctuation">.</span><span class="token function">tellg</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    file<span class="token punctuation">.</span><span class="token function">seekg</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> ios<span class="token double-colon punctuation">::</span>beg<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment">// 创建 socket</span>
+    <span class="token keyword">int</span> sock <span class="token operator">=</span> <span class="token function">socket</span><span class="token punctuation">(</span>AF_INET<span class="token punctuation">,</span> SOCK_STREAM<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>sock <span class="token operator">&lt;</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        cerr <span class="token operator">&lt;&lt;</span> <span class="token string">"Failed to create socket"</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token comment">// 连接服务器</span>
+    sockaddr_in server_address<span class="token punctuation">;</span>
+    server_address<span class="token punctuation">.</span>sin_family <span class="token operator">=</span> AF_INET<span class="token punctuation">;</span>
+    server_address<span class="token punctuation">.</span>sin_addr<span class="token punctuation">.</span>s_addr <span class="token operator">=</span> <span class="token function">inet_addr</span><span class="token punctuation">(</span><span class="token string">"ip"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    server_address<span class="token punctuation">.</span>sin_port <span class="token operator">=</span> <span class="token function">htons</span><span class="token punctuation">(</span><span class="token number">12345</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">connect</span><span class="token punctuation">(</span>sock<span class="token punctuation">,</span> <span class="token punctuation">(</span>sockaddr<span class="token operator">*</span><span class="token punctuation">)</span><span class="token operator">&amp;</span>server_address<span class="token punctuation">,</span> <span class="token keyword">sizeof</span><span class="token punctuation">(</span>server_address<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">&lt;</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        cerr <span class="token operator">&lt;&lt;</span> <span class="token string">"Failed to connect to server"</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+        <span class="token function">close</span><span class="token punctuation">(</span>sock<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token comment">// 发送文件信息</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">send</span><span class="token punctuation">(</span>sock<span class="token punctuation">,</span> <span class="token operator">&amp;</span>send_file<span class="token punctuation">,</span> <span class="token keyword">sizeof</span><span class="token punctuation">(</span>FileInfo<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token operator">&lt;</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        cerr <span class="token operator">&lt;&lt;</span> <span class="token string">"Failed to send file info"</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+        <span class="token function">close</span><span class="token punctuation">(</span>sock<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token comment">// 发送文件数据</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>send_file<span class="token punctuation">.</span>is_delete<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token comment">// 如果不是删除操作，则发送文件数据</span>
+        size_t bytes_sent <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+        <span class="token keyword">char</span> buffer<span class="token punctuation">[</span><span class="token number">4096</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+        size_t bytes_read<span class="token punctuation">;</span>
+        <span class="token keyword">while</span> <span class="token punctuation">(</span>bytes_sent <span class="token operator">&lt;</span> send_file<span class="token punctuation">.</span>file_size<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            bytes_read <span class="token operator">=</span> file<span class="token punctuation">.</span><span class="token function">readsome</span><span class="token punctuation">(</span>buffer<span class="token punctuation">,</span> <span class="token keyword">sizeof</span><span class="token punctuation">(</span>buffer<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>bytes_read <span class="token operator">&lt;=</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                cerr <span class="token operator">&lt;&lt;</span> <span class="token string">"Failed to read file"</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+                <span class="token function">close</span><span class="token punctuation">(</span>sock<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token keyword">return</span> <span class="token number">1</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span>
+
+            ssize_t ret <span class="token operator">=</span> <span class="token function">send</span><span class="token punctuation">(</span>sock<span class="token punctuation">,</span> buffer<span class="token punctuation">,</span> bytes_read<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>ret <span class="token operator">&lt;</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                cerr <span class="token operator">&lt;&lt;</span> <span class="token string">"Failed to send file data"</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+                <span class="token function">close</span><span class="token punctuation">(</span>sock<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token keyword">return</span> <span class="token number">1</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span>
+
+            bytes_sent <span class="token operator">+=</span> ret<span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+
+    file<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">close</span><span class="token punctuation">(</span>sock<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>Build</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">gcc main.cpp -lstdc++<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>On your server. you can put it in the dir <code>source/_posts</code> after you have build it, dont forget change to your ip</p>
+<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;iostream></span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;fstream></span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;sys/socket.h></span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;netinet/in.h></span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;unistd.h></span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;cstring></span></span>
+<span class="token keyword">using</span> <span class="token keyword">namespace</span> std<span class="token punctuation">;</span>
+
+<span class="token keyword">struct</span> <span class="token class-name">FileInfo</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">char</span> filename<span class="token punctuation">[</span><span class="token number">256</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+    size_t file_size<span class="token punctuation">;</span>
+    <span class="token keyword">bool</span> is_delete<span class="token punctuation">;</span> <span class="token comment">// 新增的字段</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">int</span> listen_sock <span class="token operator">=</span> <span class="token function">socket</span><span class="token punctuation">(</span>AF_INET<span class="token punctuation">,</span> SOCK_STREAM<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>listen_sock <span class="token operator">&lt;</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        cerr <span class="token operator">&lt;&lt;</span> <span class="token string">"Failed to create socket"</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+
+    sockaddr_in server_address<span class="token punctuation">;</span>
+    server_address<span class="token punctuation">.</span>sin_family <span class="token operator">=</span> AF_INET<span class="token punctuation">;</span>
+    server_address<span class="token punctuation">.</span>sin_addr<span class="token punctuation">.</span>s_addr <span class="token operator">=</span> INADDR_ANY<span class="token punctuation">;</span>
+    server_address<span class="token punctuation">.</span>sin_port <span class="token operator">=</span> <span class="token function">htons</span><span class="token punctuation">(</span><span class="token number">12345</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">bind</span><span class="token punctuation">(</span>listen_sock<span class="token punctuation">,</span> <span class="token punctuation">(</span>sockaddr<span class="token operator">*</span><span class="token punctuation">)</span><span class="token operator">&amp;</span>server_address<span class="token punctuation">,</span> <span class="token keyword">sizeof</span><span class="token punctuation">(</span>server_address<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        cerr <span class="token operator">&lt;&lt;</span> <span class="token string">"Failed to bind to port"</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+        <span class="token function">close</span><span class="token punctuation">(</span>listen_sock<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">listen</span><span class="token punctuation">(</span>listen_sock<span class="token punctuation">,</span> SOMAXCONN<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        cerr <span class="token operator">&lt;&lt;</span> <span class="token string">"Failed to listen for connections"</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+        <span class="token function">close</span><span class="token punctuation">(</span>listen_sock<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        sockaddr_in client_address<span class="token punctuation">;</span>
+        socklen_t client_size <span class="token operator">=</span> <span class="token keyword">sizeof</span><span class="token punctuation">(</span>client_address<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">int</span> client_sock <span class="token operator">=</span> <span class="token function">accept</span><span class="token punctuation">(</span>listen_sock<span class="token punctuation">,</span> <span class="token punctuation">(</span>sockaddr<span class="token operator">*</span><span class="token punctuation">)</span><span class="token operator">&amp;</span>client_address<span class="token punctuation">,</span> <span class="token operator">&amp;</span>client_size<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>client_sock <span class="token operator">&lt;</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            cerr <span class="token operator">&lt;&lt;</span> <span class="token string">"Failed to accept connection"</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+            <span class="token keyword">continue</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+
+        FileInfo file_info<span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">recv</span><span class="token punctuation">(</span>client_sock<span class="token punctuation">,</span> <span class="token operator">&amp;</span>file_info<span class="token punctuation">,</span> <span class="token keyword">sizeof</span><span class="token punctuation">(</span>FileInfo<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token operator">&lt;</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            cerr <span class="token operator">&lt;&lt;</span> <span class="token string">"Failed to receive file info"</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+            <span class="token function">close</span><span class="token punctuation">(</span>client_sock<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">continue</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>file_info<span class="token punctuation">.</span>is_delete<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token comment">// 如果为删除操作，则删除文件</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">remove</span><span class="token punctuation">(</span>file_info<span class="token punctuation">.</span>filename<span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                cout <span class="token operator">&lt;&lt;</span> <span class="token string">"File deleted: "</span> <span class="token operator">&lt;&lt;</span> file_info<span class="token punctuation">.</span>filename <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
+                cerr <span class="token operator">&lt;&lt;</span> <span class="token string">"Failed to delete file: "</span> <span class="token operator">&lt;&lt;</span> file_info<span class="token punctuation">.</span>filename <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span>
+            <span class="token function">close</span><span class="token punctuation">(</span>client_sock<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">continue</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+
+        ofstream <span class="token function">file</span><span class="token punctuation">(</span>file_info<span class="token punctuation">.</span>filename<span class="token punctuation">,</span> ios<span class="token double-colon punctuation">::</span>binary <span class="token operator">|</span> ios<span class="token double-colon punctuation">::</span>trunc<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>file<span class="token punctuation">.</span><span class="token function">is_open</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            cerr <span class="token operator">&lt;&lt;</span> <span class="token string">"Failed to open file: "</span> <span class="token operator">&lt;&lt;</span> file_info<span class="token punctuation">.</span>filename <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+            <span class="token function">close</span><span class="token punctuation">(</span>client_sock<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">continue</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+
+        <span class="token keyword">char</span> buffer<span class="token punctuation">[</span><span class="token number">4096</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+        size_t bytes_received<span class="token punctuation">;</span>
+        size_t bytes_written <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+        <span class="token keyword">while</span> <span class="token punctuation">(</span>bytes_written <span class="token operator">&lt;</span> file_info<span class="token punctuation">.</span>file_size<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            ssize_t ret <span class="token operator">=</span> <span class="token function">recv</span><span class="token punctuation">(</span>client_sock<span class="token punctuation">,</span> buffer<span class="token punctuation">,</span> <span class="token keyword">sizeof</span><span class="token punctuation">(</span>buffer<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>ret <span class="token operator">&lt;=</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                cerr <span class="token operator">&lt;&lt;</span> <span class="token string">"Failed to receive data"</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+                <span class="token function">close</span><span class="token punctuation">(</span>client_sock<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                file<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token function">remove</span><span class="token punctuation">(</span>file_info<span class="token punctuation">.</span>filename<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token keyword">break</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span>
+
+            file<span class="token punctuation">.</span><span class="token function">write</span><span class="token punctuation">(</span>buffer<span class="token punctuation">,</span> ret<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            bytes_written <span class="token operator">+=</span> ret<span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+
+        file<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">close</span><span class="token punctuation">(</span>client_sock<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token function">close</span><span class="token punctuation">(</span>listen_sock<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>Build</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">gcc main.cpp -lstdc++<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h5 id="how-to-use"><a href="#how-to-use" class="headerlink" title="how to use"></a>how to use</h5><p>client</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">./a.out <span class="token operator">&lt;</span>filename<span class="token operator">></span> upload <span class="token function">file</span>
+./a.out <span class="token parameter variable">-d</span> <span class="token operator">&lt;</span>filename<span class="token operator">></span> delete <span class="token function">file</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>server</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">./a.out<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>keep it run all the time. via <code>screen</code> or other approach</p>
+
+        
+        <blockquote class="mdui-m-x-0 mdui-m-t-4">
+    <strong>
+        Author: <a href="/about/">Z Chan</a><br>
+        URL: <a href="https://zchancode.github.io/2023/04/17/hexo-tutor/">https://zchancode.github.io/2023/04/17/hexo-tutor/</a><br>
+        
+            This work is licensed under a <a rel="license noopener" target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> .
+        
+    </strong>
+</blockquote>
+        
+    </div>
+    
+</article>
+<nav class="mdui-theme-layout-light mdui-color-transparent mdui-row mdui-m-b-2">
+    
+        <div class="mdui-col-xs-12 mdui-m-b-2">
+            <a class="extend prev mdui-btn mdui-ripple mdui-float-left mdui-text-truncate" rel="prev"
+                style="max-width: 100%" href="/2023/04/18/0x00_my-os/">
+                <i class="mdui-icon mdui-icon-left material-icons">arrow_back</i>搭建自制操作系统开发环境
+            </a>
+        </div>
+    
+        <div class="mdui-col-xs-12">
+            <span disabled class="extend next mdui-btn mdui-ripple mdui-float-right" rel="next">
+                <i class="mdui-icon mdui-icon-right material-icons">arrow_forward</i>
+            </span>
+        </div>
+    
+</nav>
+
+    </div>
+    <a href="#" class="mdui-fab mdui-fab-fixed mdui-hidden-xs mdui-color-theme-accent mdui-ripple"><i class="mdui-icon material-icons">keyboard_arrow_up</i></a>
+
+<script src="https://cdn.jsdelivr.net/npm/mdui@1.0.2/dist/js/mdui.min.js"></script>
+
+
+<script>
+    var $ = mdui.$;
+    function init(){
+        //
+    }
+    window.addEventListener("load", () => {
+        //
+        init()
+    }, {once: true});
+</script>
+
+</body>
+</html>

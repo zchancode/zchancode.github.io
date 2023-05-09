@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+    <meta charset="utf-8">
+<meta name="renderer" content="webkit">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+
+
+    <link rel="dns-prefetch" //cdn.jsdelivr.net>
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdui@1.0.2/dist/css/mdui.min.css">
+
+
+
+    
+<link rel="stylesheet" href="/css/prism-m.css">
+
+    
+
+
+
+<meta name="theme-color" content="#3F51B5">
+
+
+<style>
+    html,body{scroll-behavior:smooth;min-height:100vh}
+    blockquote>strong>a{word-break:break-all}
+    .mdui-hoverable:hover,.mdui-hoverable:focus{-webkit-box-shadow:0 5px 5px -3px rgba(0,0,0,.2),0 8px 10px 1px rgba(0,0,0,.14),0 3px 14px 2px rgba(0,0,0,.12) !important;box-shadow:0 5px 5px -3px rgba(0,0,0,.2),0 8px 10px 1px rgba(0,0,0,.14),0 3px 14px 2px rgba(0,0,0,.12) !important;}
+    .mdui-card-primary-title a{text-decoration:none !important}
+    .page-number{display:none !important}
+    .mdui-container-fluid{transition:opacity .4s}
+    
+        body{background-color: #f6f6f6}
+
+    
+</style>
+    
+    <title>0x05_My-OS显示字符串和任意参数 | Chan&#39;s blog</title>
+    <link rel="canonical" href="https://zchancode.github.io/2023/04/19/0x05_my-os/">
+    <meta name="description" content="要解决两个问题，第一个如何显示字符串，printf？我之前已经说了所有的头文件都要自己写，printf是stdio里的可是我们没有stdio我们要通过画像素点的方式显示字符串，有点像我的世界的红石系统，用红石点亮一个方块，第二个问题是如何调用类似sprintf的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="0x05_My-OS显示字符串和任意参数">
+<meta property="og:url" content="https://zchancode.github.io/2023/04/19/0x05_my-os/index.html">
+<meta property="og:site_name" content="Chan&#39;s blog">
+<meta property="og:description" content="要解决两个问题，第一个如何显示字符串，printf？我之前已经说了所有的头文件都要自己写，printf是stdio里的可是我们没有stdio我们要通过画像素点的方式显示字符串，有点像我的世界的红石系统，用红石点亮一个方块，第二个问题是如何调用类似sprintf的">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://zchancode.github.io/images/os07.png">
+<meta property="article:published_time" content="2023-04-18T17:39:00.000Z">
+<meta property="article:modified_time" content="2023-04-19T03:34:51.000Z">
+<meta property="article:author" content="Z Chan">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://zchancode.github.io/images/os07.png">
+<meta name="generator" content="Hexo 6.3.0"></head>
+<body class="mdui-theme-primary-indigo mdui-theme-accent-pink mdui-appbar-with-toolbar ">
+    <div class="mdui-theme-layout-light">
+    <header id="appbar" class="mdui-appbar mdui-appbar-fixed mdui-shadow-0 mdui-appbar-scroll-hide">
+    <div class="mdui-toolbar">
+        <button mdui-drawer="{target: '.mdui-drawer'}" class="mdui-btn mdui-btn-icon mdui-ripple"><i class="mdui-icon material-icons">menu</i></button>
+        <a href="/" class="mdui-typo-title">Chan&#39;s blog</a>
+        <div class="mdui-toolbar-spacer"></div>
+        
+        <a href="/search/" class="mdui-btn mdui-btn-icon mdui-ripple"><i class="mdui-icon material-icons">search</i></a>
+        
+    </div>
+</header>
+    <aside class="mdui-drawer mdui-drawer-close">
+    <nav class="mdui-list" mdui-collapse="{accordion: true}">
+        <a href="/about/"  class="mdui-list-item mdui-ripple">
+            <div class="mdui-list-item-avatar">
+                
+                <i class="mdui-color-theme-primary mdui-icon material-icons">person</i>
+                
+            </div>
+            <div class="mdui-list-item-content">Z Chan</div>
+        </a>
+        <div class="mdui-divider"></div>
+        
+        <a href="/" class="mdui-list-item mdui-ripple">
+            <i class="mdui-list-item-icon mdui-icon material-icons">home</i>
+            <div class="mdui-list-item-content">Home</div>
+        </a>
+        
+        <div class="mdui-collapse-item">
+            <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+                <i class="mdui-list-item-icon mdui-icon material-icons">inbox</i>
+                <div class="mdui-list-item-content">Archives</div>
+                <i class="mdui-collapse-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+            </div>
+            <div class="mdui-collapse-item-body mdui-list mdui-list-dense">
+                <a class="mdui-list-item mdui-ripple m-link" href="/archives/2023/05/">May 2023</a><a class="mdui-list-item mdui-ripple m-link" href="/archives/2023/04/">April 2023</a>
+            </div>
+        </div>
+        
+        <div class="mdui-collapse-item">
+            <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+                <i class="mdui-list-item-icon mdui-icon material-icons">apps</i>
+                <div class="mdui-list-item-content">Categories</div>
+                <i class="mdui-collapse-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+            </div>
+            <div class="mdui-collapse-item-body mdui-list mdui-list-dense">
+                <a class="mdui-list-item mdui-ripple m-link" href="/categories/Android%E5%B0%8F%E9%A1%B9%E7%9B%AE/">Android小项目</a><a class="mdui-list-item mdui-ripple m-link" href="/categories/Android%E5%B7%A5%E5%85%B7%E7%B1%BB/">Android工具类</a><a class="mdui-list-item mdui-ripple m-link" href="/categories/Android%E6%BA%90%E7%A0%81%E7%A0%94%E7%A9%B6/">Android源码研究</a><a class="mdui-list-item mdui-ripple m-link" href="/categories/Android%E7%8E%A9%E6%9C%BA/">Android玩机</a><a class="mdui-list-item mdui-ripple m-link" href="/categories/Hexo%E5%8D%9A%E5%AE%A2%E6%95%99%E7%A8%8B/">Hexo博客教程</a><a class="mdui-list-item mdui-ripple m-link" href="/categories/Linux/">Linux</a><a class="mdui-list-item mdui-ripple m-link" href="/categories/Youtube-Project/">Youtube Project</a><a class="mdui-list-item mdui-ripple m-link" href="/categories/%E5%AD%A6%E6%9C%AF%E8%AE%BA%E6%96%87/">学术论文</a><a class="mdui-list-item mdui-ripple m-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><a class="mdui-list-item mdui-ripple m-link" href="/categories/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89/">机器视觉</a><a class="mdui-list-item mdui-ripple m-link" href="/categories/%E8%87%AA%E5%88%B6%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">自制操作系统</a>
+            </div>
+        </div>
+        
+    </nav>
+    <div class="mdui-divider"></div>
+    <footer class="mdui-m-l-2 mdui-m-t-1 mdui-typo mdui-text-color-theme-disabled">
+        <p class="mdui-m-b-0">
+            
+            ©
+            2023 Z Chan<br>
+            
+            Powered by <a href="https://hexo.io/" rel="noreferrer" target="_blank">Hexo</a><br>
+            
+            Theme - <a href="https://github.com/kwaa/hexo-theme-m" rel="noreferrer" target="_blank"
+                mdui-tooltip="{position:'right', content: 'by 藍+85CD'}">M</a></p>
+            
+    </footer>
+</aside>
+    </div>
+    <div class="mdui-container-fluid mdui-center" style="max-width:720px">
+        <article class="mdui-card mdui-hoverable mdui-shadow-1 mdui-m-y-2" style="opacity: 1; border-radius: 4px">
+    
+    <div class="mdui-card-primary mdui-ripple">
+    <div class="mdui-card-primary-title">
+        <a role="heading" aria-level="1" class="mdui-text-color-theme-text" >0x05_My-OS显示字符串和任意参数</a>
+        
+        <small> <a class="mdui-text-color-theme-text category-link" href="/categories/%E8%87%AA%E5%88%B6%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">自制操作系统</a></small>
+        
+    </div>
+    <div class="mdui-card-primary-subtitle mdui-typo">
+        
+        <span mdui-tooltip="{content:'Created: 2023-04-19 01:39<br>Updated: 2023-04-19 11:34'}">2023-04-19 -</span>
+        
+            <span>2023/04/19/0x05_my-os/</span>
+        
+    </div>
+</div>
+    
+    
+    <div class="mdui-divider"></div>
+    <div class="mdui-card-content mdui-typo">
+        
+        <p>要解决两个问题，第一个如何显示字符串，printf？我之前已经说了所有的头文件都要自己写，printf是stdio里的可是我们没有stdio<br>我们要通过画像素点的方式显示字符串，有点像我的世界的红石系统，用红石点亮一个方块，第二个问题是如何调用类似sprintf的</p>
+<span id="more"></span>
+<h5 id="功能"><a href="#功能" class="headerlink" title="功能"></a>功能</h5><p>显示字符串<br>把<code>class02</code>改名为<code>class03</code></p>
+<p>复制<code>kernel</code>中<code>font</code>文件夹到你的<code>class03</code></p>
+<h5 id="graphic-c"><a href="#graphic-c" class="headerlink" title="graphic.c"></a>graphic.c</h5><pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token keyword">void</span> <span class="token function">putfont8</span><span class="token punctuation">(</span><span class="token keyword">char</span> <span class="token operator">*</span>vram<span class="token punctuation">,</span> <span class="token keyword">int</span> xsize<span class="token punctuation">,</span> <span class="token keyword">int</span> x<span class="token punctuation">,</span> <span class="token keyword">int</span> y<span class="token punctuation">,</span> <span class="token keyword">char</span> c<span class="token punctuation">,</span> <span class="token keyword">char</span> <span class="token operator">*</span>font<span class="token punctuation">)</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token keyword">int</span> i<span class="token punctuation">;</span>
+    <span class="token keyword">char</span> <span class="token operator">*</span>p<span class="token punctuation">,</span> d <span class="token comment">/* data */</span><span class="token punctuation">;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span>i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">16</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        p <span class="token operator">=</span> vram <span class="token operator">+</span> <span class="token punctuation">(</span>y <span class="token operator">+</span> i<span class="token punctuation">)</span> <span class="token operator">*</span> xsize <span class="token operator">+</span> x<span class="token punctuation">;</span>
+        d <span class="token operator">=</span> font<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>d <span class="token operator">&amp;</span> <span class="token number">0x80</span><span class="token punctuation">)</span> <span class="token operator">!=</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> p<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">=</span> c<span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>d <span class="token operator">&amp;</span> <span class="token number">0x40</span><span class="token punctuation">)</span> <span class="token operator">!=</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> p<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">=</span> c<span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>d <span class="token operator">&amp;</span> <span class="token number">0x20</span><span class="token punctuation">)</span> <span class="token operator">!=</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> p<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span> <span class="token operator">=</span> c<span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>d <span class="token operator">&amp;</span> <span class="token number">0x10</span><span class="token punctuation">)</span> <span class="token operator">!=</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> p<span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">]</span> <span class="token operator">=</span> c<span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>d <span class="token operator">&amp;</span> <span class="token number">0x08</span><span class="token punctuation">)</span> <span class="token operator">!=</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> p<span class="token punctuation">[</span><span class="token number">4</span><span class="token punctuation">]</span> <span class="token operator">=</span> c<span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>d <span class="token operator">&amp;</span> <span class="token number">0x04</span><span class="token punctuation">)</span> <span class="token operator">!=</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> p<span class="token punctuation">[</span><span class="token number">5</span><span class="token punctuation">]</span> <span class="token operator">=</span> c<span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>d <span class="token operator">&amp;</span> <span class="token number">0x02</span><span class="token punctuation">)</span> <span class="token operator">!=</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> p<span class="token punctuation">[</span><span class="token number">6</span><span class="token punctuation">]</span> <span class="token operator">=</span> c<span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>d <span class="token operator">&amp;</span> <span class="token number">0x01</span><span class="token punctuation">)</span> <span class="token operator">!=</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> p<span class="token punctuation">[</span><span class="token number">7</span><span class="token punctuation">]</span> <span class="token operator">=</span> c<span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">return</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token keyword">void</span> <span class="token function">putfonts8_asc</span><span class="token punctuation">(</span><span class="token keyword">char</span> <span class="token operator">*</span>vram<span class="token punctuation">,</span> <span class="token keyword">int</span> xsize<span class="token punctuation">,</span> <span class="token keyword">int</span> x<span class="token punctuation">,</span> <span class="token keyword">int</span> y<span class="token punctuation">,</span> <span class="token keyword">char</span> c<span class="token punctuation">,</span> <span class="token keyword">unsigned</span> <span class="token keyword">char</span> <span class="token operator">*</span>s<span class="token punctuation">)</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token keyword">extern</span> <span class="token keyword">char</span> font<span class="token punctuation">[</span><span class="token number">4096</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+    <span class="token comment">/* C语言中，字符串都是以0x00结尾 */</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token punctuation">;</span> <span class="token operator">*</span>s <span class="token operator">!=</span> <span class="token number">0x00</span><span class="token punctuation">;</span> s<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token function">putfont8</span><span class="token punctuation">(</span>vram<span class="token punctuation">,</span> xsize<span class="token punctuation">,</span> x<span class="token punctuation">,</span> y<span class="token punctuation">,</span> c<span class="token punctuation">,</span> font <span class="token operator">+</span> <span class="token operator">*</span>s <span class="token operator">*</span> <span class="token number">16</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        x <span class="token operator">+=</span> <span class="token number">8</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">return</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>在graphic里面增加这些函数，第一个函数是用来读取字符串然后表示成像素点，字符串的形式类似于</p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">**......
+.*......
+.*......
+.*......
+.*......
+.*.**...
+.**..*..
+.*....*.
+.*....*.
+.*....*.
+.*....*.
+.*....*.
+.*....*.
+***...**
+........
+........<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>这是个h，他读取就是读*遍历到就显示像素点为指定颜色</p>
+<h5 id="head-h"><a href="#head-h" class="headerlink" title="head.h"></a>head.h</h5><pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token comment">/*naskfunc.asm*/</span>
+<span class="token keyword">void</span> <span class="token function">io_stihlt</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">void</span> <span class="token function">io_hlt</span><span class="token punctuation">(</span><span class="token keyword">void</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">void</span> <span class="token function">io_cli</span><span class="token punctuation">(</span><span class="token keyword">void</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">void</span> <span class="token function">io_sti</span><span class="token punctuation">(</span><span class="token keyword">void</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">int</span> <span class="token function">io_get8</span><span class="token punctuation">(</span><span class="token keyword">int</span> port<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">void</span> <span class="token function">io_set8</span><span class="token punctuation">(</span><span class="token keyword">int</span> port<span class="token punctuation">,</span> <span class="token keyword">int</span> data<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">void</span> <span class="token function">write_mem8</span><span class="token punctuation">(</span><span class="token keyword">int</span> addr<span class="token punctuation">,</span> <span class="token keyword">int</span> data<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">int</span> <span class="token function">io_load_eflags</span><span class="token punctuation">(</span><span class="token keyword">void</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">void</span> <span class="token function">io_store_eflags</span><span class="token punctuation">(</span><span class="token keyword">int</span> eflags<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">/* asmhead.nas */</span>
+<span class="token keyword">struct</span> <span class="token class-name">BOOTINFO</span> <span class="token punctuation">&#123;</span> <span class="token comment">/* 0x0ff0-0x0fff */</span>
+    <span class="token keyword">char</span> cyls<span class="token punctuation">;</span> <span class="token comment">/* 启动区读磁盘读到此为止 */</span>
+    <span class="token keyword">char</span> leds<span class="token punctuation">;</span> <span class="token comment">/* 启动时键盘的LED的状态 */</span>
+    <span class="token keyword">char</span> vmode<span class="token punctuation">;</span> <span class="token comment">/* 显卡模式为多少位彩色 */</span>
+    <span class="token keyword">char</span> reserve<span class="token punctuation">;</span>
+    <span class="token keyword">short</span> scrnx<span class="token punctuation">,</span> scrny<span class="token punctuation">;</span> <span class="token comment">/* 画面分辨率 */</span>
+    <span class="token keyword">char</span> <span class="token operator">*</span>vram<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">define</span> <span class="token macro-name">ADR_BOOTINFO</span> <span class="token expression"><span class="token number">0x00000ff0</span></span></span>
+
+<span class="token comment">/*graphic.c*/</span>
+<span class="token keyword">void</span> <span class="token function">init_palette</span><span class="token punctuation">(</span><span class="token keyword">void</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">void</span> <span class="token function">set_palette</span><span class="token punctuation">(</span><span class="token keyword">int</span> start<span class="token punctuation">,</span> <span class="token keyword">int</span> end<span class="token punctuation">,</span> <span class="token keyword">unsigned</span> <span class="token keyword">char</span> <span class="token operator">*</span>rgb<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">void</span> <span class="token function">boxfill8</span><span class="token punctuation">(</span><span class="token keyword">unsigned</span> <span class="token keyword">char</span> <span class="token operator">*</span>vram<span class="token punctuation">,</span> <span class="token keyword">int</span> xsize<span class="token punctuation">,</span> <span class="token keyword">unsigned</span> <span class="token keyword">char</span> c<span class="token punctuation">,</span> <span class="token keyword">int</span> x0<span class="token punctuation">,</span> <span class="token keyword">int</span> y0<span class="token punctuation">,</span> <span class="token keyword">int</span> x1<span class="token punctuation">,</span> <span class="token keyword">int</span> y1<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">void</span> <span class="token function">putfont8</span><span class="token punctuation">(</span><span class="token keyword">char</span> <span class="token operator">*</span>vram<span class="token punctuation">,</span> <span class="token keyword">int</span> xsize<span class="token punctuation">,</span> <span class="token keyword">int</span> x<span class="token punctuation">,</span> <span class="token keyword">int</span> y<span class="token punctuation">,</span> <span class="token keyword">char</span> c<span class="token punctuation">,</span> <span class="token keyword">char</span> <span class="token operator">*</span>font<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">void</span> <span class="token function">putfonts8_asc</span><span class="token punctuation">(</span><span class="token keyword">char</span> <span class="token operator">*</span>vram<span class="token punctuation">,</span> <span class="token keyword">int</span> xsize<span class="token punctuation">,</span> <span class="token keyword">int</span> x<span class="token punctuation">,</span> <span class="token keyword">int</span> y<span class="token punctuation">,</span> <span class="token keyword">char</span> c<span class="token punctuation">,</span> <span class="token keyword">unsigned</span> <span class="token keyword">char</span> <span class="token operator">*</span>s<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">/*font*/</span>
+<span class="token keyword">extern</span> <span class="token keyword">char</span> font<span class="token punctuation">[</span><span class="token number">4096</span><span class="token punctuation">]</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>增加的地方我都加粗了</p>
+<p>main.c</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">"include/head.h"</span></span>
+<span class="token keyword">struct</span> <span class="token class-name">BOOTINFO</span> <span class="token operator">*</span>binfo <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">struct</span> <span class="token class-name">BOOTINFO</span> <span class="token operator">*</span><span class="token punctuation">)</span> ADR_BOOTINFO<span class="token punctuation">;</span>
+
+<span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token keyword">void</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+    <span class="token keyword">int</span> i<span class="token punctuation">;</span>
+    <span class="token function">init_palette</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">boxfill8</span><span class="token punctuation">(</span>binfo<span class="token operator">-></span>vram<span class="token punctuation">,</span> binfo<span class="token operator">-></span>scrnx<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">,</span>binfo<span class="token operator">-></span>scrnx<span class="token punctuation">,</span> binfo<span class="token operator">-></span>scrny<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">putfonts8_asc</span><span class="token punctuation">(</span>binfo<span class="token operator">-></span>vram<span class="token punctuation">,</span> binfo<span class="token operator">-></span>scrnx<span class="token punctuation">,</span> <span class="token number">8</span><span class="token punctuation">,</span> <span class="token number">8</span><span class="token punctuation">,</span> <span class="token number">7</span><span class="token punctuation">,</span> <span class="token string">"hello,world"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token punctuation">;</span><span class="token punctuation">;</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token function">io_hlt</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h5 id="最后一步"><a href="#最后一步" class="headerlink" title="最后一步"></a>最后一步</h5><p> makefile里面增加这个font.obj</p>
+<p>实现输出参数<br>haribote作者已经帮我们实现了</p>
+<h5 id="main-c"><a href="#main-c" class="headerlink" title="main.c"></a>main.c</h5><pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">"include/head.h"</span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;string.h></span></span>
+
+<span class="token keyword">struct</span> <span class="token class-name">BOOTINFO</span> <span class="token operator">*</span>binfo <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">struct</span> <span class="token class-name">BOOTINFO</span> <span class="token operator">*</span><span class="token punctuation">)</span> ADR_BOOTINFO<span class="token punctuation">;</span>
+
+<span class="token keyword">void</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token keyword">void</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+    <span class="token keyword">int</span> i<span class="token punctuation">;</span><span class="token keyword">char</span> s<span class="token punctuation">[</span><span class="token number">256</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+    <span class="token function">init_palette</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">boxfill8</span><span class="token punctuation">(</span>binfo<span class="token operator">-></span>vram<span class="token punctuation">,</span> binfo<span class="token operator">-></span>scrnx<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">,</span>binfo<span class="token operator">-></span>scrnx<span class="token punctuation">,</span> binfo<span class="token operator">-></span>scrny<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">sprintf</span><span class="token punctuation">(</span>s<span class="token punctuation">,</span> <span class="token string">"scrnx = %d"</span><span class="token punctuation">,</span> binfo<span class="token operator">-></span>scrnx<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">putfonts8_asc</span><span class="token punctuation">(</span>binfo<span class="token operator">-></span>vram<span class="token punctuation">,</span> binfo<span class="token operator">-></span>scrnx<span class="token punctuation">,</span> <span class="token number">8</span><span class="token punctuation">,</span> <span class="token number">8</span><span class="token punctuation">,</span> <span class="token number">7</span><span class="token punctuation">,</span> s<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token punctuation">;</span><span class="token punctuation">;</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token function">io_hlt</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h5 id="运行："><a href="#运行：" class="headerlink" title="运行："></a>运行：</h5><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token builtin class-name">cd</span> class02
+<span class="token punctuation">..</span><span class="token punctuation">\</span>z_tools<span class="token punctuation">\</span>make.exe run<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<figure class="mdui-img-fluid"><img src="/images/os07.png"class="mdui-img-rounded" loading="lazy"></figure>
+
+        
+        <blockquote class="mdui-m-x-0 mdui-m-t-4">
+    <strong>
+        Author: <a href="/about/">Z Chan</a><br>
+        URL: <a href="https://zchancode.github.io/2023/04/19/0x05_my-os/">https://zchancode.github.io/2023/04/19/0x05_my-os/</a><br>
+        
+            This work is licensed under a <a rel="license noopener" target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> .
+        
+    </strong>
+</blockquote>
+        
+    </div>
+    
+</article>
+<nav class="mdui-theme-layout-light mdui-color-transparent mdui-row mdui-m-b-2">
+    
+        <div class="mdui-col-xs-12 mdui-m-b-2">
+            <a class="extend prev mdui-btn mdui-ripple mdui-float-left mdui-text-truncate" rel="prev"
+                style="max-width: 100%" href="/2023/04/19/0x06_my-os/">
+                <i class="mdui-icon mdui-icon-left material-icons">arrow_back</i>0x06_自制操作系统My-OS，IDT,GDT,PIC初始化，实现键盘中断
+            </a>
+        </div>
+    
+        <div class="mdui-col-xs-12">
+            <a class="extend next mdui-btn mdui-ripple mdui-float-right mdui-text-truncate" rel="next"
+                style="max-width: 100%" href="/2023/04/19/0x04_my-os/">
+                <i class="mdui-icon mdui-icon-right material-icons">arrow_forward</i>0x04_自制操作系统My-OS实现自定义颜色
+            </a>
+        </div>
+    
+</nav>
+
+    </div>
+    <a href="#" class="mdui-fab mdui-fab-fixed mdui-hidden-xs mdui-color-theme-accent mdui-ripple"><i class="mdui-icon material-icons">keyboard_arrow_up</i></a>
+
+<script src="https://cdn.jsdelivr.net/npm/mdui@1.0.2/dist/js/mdui.min.js"></script>
+
+
+<script>
+    var $ = mdui.$;
+    function init(){
+        //
+    }
+    window.addEventListener("load", () => {
+        //
+        init()
+    }, {once: true});
+</script>
+
+</body>
+</html>
