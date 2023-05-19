@@ -37,13 +37,17 @@
     
 </style>
     
-    <title>Categories: Linux | Chan&#39;s blog</title>
-    <link rel="canonical" href="https://zchancode.github.io/categories/Linux/">
-    <meta property="og:type" content="website">
-<meta property="og:title" content="Chan&#39;s blog">
-<meta property="og:url" content="https://zchancode.github.io/categories/Linux/index.html">
+    <title>0x03_Ubuntu raid5 create and remove | Chan&#39;s blog</title>
+    <link rel="canonical" href="https://zchancode.github.io/2023/05/19/0x03_linux/">
+    <meta name="description" content="create raid5Creating raid5 with sd[b-d]sudo mdadm --create --verbose &#x2F;dev&#x2F;md0 --level&#x3D;5 --raid-devices&#x3D;3 &#x2F;dev&#x2F;sd[b-d]">
+<meta property="og:type" content="article">
+<meta property="og:title" content="0x03_Ubuntu raid5 create and remove">
+<meta property="og:url" content="https://zchancode.github.io/2023/05/19/0x03_linux/index.html">
 <meta property="og:site_name" content="Chan&#39;s blog">
+<meta property="og:description" content="create raid5Creating raid5 with sd[b-d]sudo mdadm --create --verbose &#x2F;dev&#x2F;md0 --level&#x3D;5 --raid-devices&#x3D;3 &#x2F;dev&#x2F;sd[b-d]">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2023-05-19T10:02:00.000Z">
+<meta property="article:modified_time" content="2023-05-19T12:31:17.029Z">
 <meta property="article:author" content="Z Chan">
 <meta name="twitter:card" content="summary">
 <meta name="generator" content="Hexo 6.3.0"></head>
@@ -115,13 +119,11 @@
 </aside>
     </div>
     <div class="mdui-container-fluid mdui-center" style="max-width:720px">
-        <div class="mdui-theme-layout-light mdui-color-transparent">
-
-    <section class="mdui-card mdui-hoverable mdui-shadow-1 mdui-m-y-2" style="opacity: 1; border-radius: 4px">
+        <article class="mdui-card mdui-hoverable mdui-shadow-1 mdui-m-y-2" style="opacity: 1; border-radius: 4px">
     
     <div class="mdui-card-primary mdui-ripple">
     <div class="mdui-card-primary-title">
-        <a role="heading" aria-level="1" class="mdui-text-color-theme-text" href="/2023/05/19/0x03_linux/">0x03_Ubuntu raid5 create and remove</a>
+        <a role="heading" aria-level="1" class="mdui-text-color-theme-text" >0x03_Ubuntu raid5 create and remove</a>
         
         <small> <a class="mdui-text-color-theme-text category-link" href="/categories/Linux/">Linux</a></small>
         
@@ -139,45 +141,46 @@
     <div class="mdui-divider"></div>
     <div class="mdui-card-content mdui-typo">
         
-            <h5 id="create-raid5"><a href="#create-raid5" class="headerlink" title="create raid5"></a>create raid5</h5><p>Creating raid5 with sd[b-d]<br><code>sudo mdadm --create --verbose /dev/md0 --level=5 --raid-devices=3 /dev/sd[b-d]</code></p>
-            
-            <a class="mdui-btn mdui-btn-block mdui-ripple" href="/2023/05/19/0x03_linux/">Read more</a>
-        
-    </div>
-    
-</section>
+        <h5 id="create-raid5"><a href="#create-raid5" class="headerlink" title="create raid5"></a>create raid5</h5><p>Creating raid5 with sd[b-d]<br><code>sudo mdadm --create --verbose /dev/md0 --level=5 --raid-devices=3 /dev/sd[b-d]</code></p>
+<span id="more"></span>
+<p>Format the raid5 you just created<br><code>sudo mkfs.ext4 /dev/md0</code><br>if you now reboot md0 will be md127. you should follow these to avoid it<br><code>sudo mdadm --detail --scan</code><br>you get this copy it into the last line of <code>/etc/mdadm/mdadm.conf</code></p>
+<pre class="line-numbers language-none"><code class="language-none">ARRAY &#x2F;dev&#x2F;md0 metadata&#x3D;1.2 ....<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>make it effective<br><code>sudo update-initramfs -u</code><br>last step mount your md0 to &#x2F;mnt&#x2F;md0<br><code>sudo nano /etc/fstab</code></p>
+<pre class="line-numbers language-none"><code class="language-none">&#x2F;dev&#x2F;md0(Tap)&#x2F;mnt&#x2F;md0(Tap)ext4(Tap)defaults(Tap)0(Tap)0<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>reboot and run <code>lsblk</code> you would see the result</p>
+<h5 id="remove-raid5"><a href="#remove-raid5" class="headerlink" title="remove raid5"></a>remove raid5</h5><p><code>sudo nano /etc/fstab</code><br>delete the last line you have created before otherwise your system could not be started<br><code>sudo umount /mnt/raid5</code><br>and<br><code>sudo mdadm -S /dev/md0</code><br>to stop raid5<br>don’t forget <code>sudo nano /etc/mdadm/mdadm.conf</code> to delete you have created<br>now you can clean the md0 in every sd[b-d]<br><code>sudo mdadm --zero-superblock /dev/sd[b-d]</code></p>
+<p>finally<br><code>sudo update-initramfs -u</code></p>
 
-    <section class="mdui-card mdui-hoverable mdui-shadow-1 mdui-m-y-2" style="opacity: 1; border-radius: 4px">
-    
-    <div class="mdui-card-primary mdui-ripple">
-    <div class="mdui-card-primary-title">
-        <a role="heading" aria-level="1" class="mdui-text-color-theme-text" href="/2023/04/20/0x01_linux/">0x01_Gparted调整磁盘大小</a>
         
-        <small> <a class="mdui-text-color-theme-text category-link" href="/categories/Linux/">Linux</a></small>
+        <blockquote class="mdui-m-x-0 mdui-m-t-4">
+    <strong>
+        Author: <a href="/about/">Z Chan</a><br>
+        URL: <a href="https://zchancode.github.io/2023/05/19/0x03_linux/">https://zchancode.github.io/2023/05/19/0x03_linux/</a><br>
         
-    </div>
-    <div class="mdui-card-primary-subtitle mdui-typo">
+            This work is licensed under a <a rel="license noopener" target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> .
         
-        <span mdui-tooltip="{content:'Created: 2023-04-20 03:09<br>Updated: 2023-04-19 03:23'}">2023-04-20 -</span>
-        
-            <span>2023/04/20/0x01_linux/</span>
-        
-    </div>
-</div>
-    
-    
-    <div class="mdui-divider"></div>
-    <div class="mdui-card-content mdui-typo">
-        
-            <p>It’s easy when you search on google</p>
-            
-            <a class="mdui-btn mdui-btn-block mdui-ripple" href="/2023/04/20/0x01_linux/">Read more</a>
+    </strong>
+</blockquote>
         
     </div>
     
-</section>
-
-</div>
+</article>
+<nav class="mdui-theme-layout-light mdui-color-transparent mdui-row mdui-m-b-2">
+    
+        <div class="mdui-col-xs-12 mdui-m-b-2">
+            <span disabled class="extend prev mdui-btn mdui-ripple mdui-float-left" rel="prev">
+                <i class="mdui-icon mdui-icon-left material-icons">arrow_back</i>
+            </span>
+        </div>
+    
+        <div class="mdui-col-xs-12">
+            <a class="extend next mdui-btn mdui-ripple mdui-float-right mdui-text-truncate" rel="next"
+                style="max-width: 100%" href="/2023/05/09/0x01_youtube/">
+                <i class="mdui-icon mdui-icon-right material-icons">arrow_forward</i>0x01_youtube project creating a MVC web project and realize login and register
+            </a>
+        </div>
+    
+</nav>
 
     </div>
     <a href="#" class="mdui-fab mdui-fab-fixed mdui-hidden-xs mdui-color-theme-accent mdui-ripple"><i class="mdui-icon material-icons">keyboard_arrow_up</i></a>
