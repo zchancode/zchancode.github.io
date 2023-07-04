@@ -38,16 +38,16 @@
 </style>
     
     <title>Android NDK使用内联汇编 | Chan&#39;s blog</title>
-    <link rel="canonical" href="https://zchancode.github.io/2023/06/17/0x11_android/">
-    <meta name="description" content="Android NDK提供了许多与硬件相关的C&#x2F;C++库和工具，使得我们可以更好地利用底层系统资源来优化应用程序性能。其中，内联汇编（Inline Assembly）是一种将汇编代码嵌入到C&#x2F;C++代码中的技术，可以实现更高效的计算和更精细的控制。本文将介绍如何在Android NDK中使用内联汇编，并通过一个简单的示例说明其使用方法和效果。 准备工作在开始之前，您需要准备以下">
+    <link rel="canonical" href="https://zchancode.github.io/2023/06/17/0x12_android/">
+    <meta name="description" content="Android NDK提供了许多与硬件相关的C&#x2F;C++库和工具，使得我们可以更好地利用底层系统资源来优化应用程序性能。其中，内联汇编（Inline Assembly）是一种将汇编代码嵌入到C&#x2F;C++代码中的技术，可以实现更高效的计算和更精细的控制。本文将介绍如何在Android NDK中使用内联汇编，并通过一个简单的示例说明其使用方法和效果。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Android NDK使用内联汇编">
-<meta property="og:url" content="https://zchancode.github.io/2023/06/17/0x11_android/index.html">
+<meta property="og:url" content="https://zchancode.github.io/2023/06/17/0x12_android/index.html">
 <meta property="og:site_name" content="Chan&#39;s blog">
-<meta property="og:description" content="Android NDK提供了许多与硬件相关的C&#x2F;C++库和工具，使得我们可以更好地利用底层系统资源来优化应用程序性能。其中，内联汇编（Inline Assembly）是一种将汇编代码嵌入到C&#x2F;C++代码中的技术，可以实现更高效的计算和更精细的控制。本文将介绍如何在Android NDK中使用内联汇编，并通过一个简单的示例说明其使用方法和效果。 准备工作在开始之前，您需要准备以下">
+<meta property="og:description" content="Android NDK提供了许多与硬件相关的C&#x2F;C++库和工具，使得我们可以更好地利用底层系统资源来优化应用程序性能。其中，内联汇编（Inline Assembly）是一种将汇编代码嵌入到C&#x2F;C++代码中的技术，可以实现更高效的计算和更精细的控制。本文将介绍如何在Android NDK中使用内联汇编，并通过一个简单的示例说明其使用方法和效果。">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2023-06-17T14:38:00.000Z">
-<meta property="article:modified_time" content="2023-07-04T07:44:18.816Z">
+<meta property="article:modified_time" content="2023-07-04T07:49:17.895Z">
 <meta property="article:author" content="Z Chan">
 <meta name="twitter:card" content="summary">
 <meta name="generator" content="Hexo 6.3.0"></head>
@@ -130,9 +130,9 @@
     </div>
     <div class="mdui-card-primary-subtitle mdui-typo">
         
-        <span mdui-tooltip="{content:'Created: 2023-06-17 10:38<br>Updated: 2023-07-04 03:44'}">2023-06-17 -</span>
+        <span mdui-tooltip="{content:'Created: 2023-06-17 10:38<br>Updated: 2023-07-04 03:49'}">2023-06-17 -</span>
         
-            <span>2023/06/17/0x11_android/</span>
+            <span>2023/06/17/0x12_android/</span>
         
     </div>
 </div>
@@ -142,7 +142,8 @@
     <div class="mdui-card-content mdui-typo">
         
         <p>Android NDK提供了许多与硬件相关的C&#x2F;C++库和工具，使得我们可以更好地利用底层系统资源来优化应用程序性能。其中，内联汇编（Inline Assembly）是一种将汇编代码嵌入到C&#x2F;C++代码中的技术，可以实现更高效的计算和更精细的控制。本文将介绍如何在Android NDK中使用内联汇编，并通过一个简单的示例说明其使用方法和效果。</p>
-<p>准备工作<br>在开始之前，您需要准备以下工具和资源：</p>
+<span id="more"></span>
+<h5 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h5><p>在开始之前，您需要准备以下工具和资源：</p>
 <p>安装Android Studio及NDK插件；<br>创建一个新的Android项目，并配置NDK编译环境。<br>编写JNI代码<br>首先，在项目的src&#x2F;main目录下创建一个名为jni的子目录，并在该目录下创建一个名为native-lib.cpp的文件。然后，编写以下代码：</p>
 <pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">#include &lt;jni.h&gt;
 
@@ -152,10 +153,14 @@ Java_com_example_myapplication_MainActivity_add(JNIEnv* env, jobject &#x2F;* thi
     __asm__ (&quot;add %0, %1, %2&quot; : &quot;&#x3D;r&quot; (result) : &quot;r&quot; (a), &quot;r&quot; (b));
     return result;
 &#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>我说一下内联代码的格式：<br>    %0是0号寄存器，是不是比eax好写多了，不用担心寄存器不够，其实这只是用来存数据的，你可以理解为寄存器，实际上比这复杂的多<br>    <code>=r</code>意思是输出标记<br>    <code>r</code>这是输入标记<br>    输入<code>ab</code>输出<code>result</code></p>
+<h5 id="我说一下内联代码的格式："><a href="#我说一下内联代码的格式：" class="headerlink" title="我说一下内联代码的格式："></a>我说一下内联代码的格式：</h5><pre><code>%0是0号寄存器，是不是比eax好写多了，不用担心寄存器不够，其实这只是用来存数据的，你可以理解为寄存器，实际上比这复杂的多
+`=r`意思是输出标记
+`r`这是输入标记
+输入`ab`输出`result`
+</code></pre>
 <p>在这个示例代码中，我们使用了<code>__asm__</code>关键字来告诉编译器接下来的代码是汇编指令。然后，我们使用了add汇编指令来计算两个整数的和，并使用输出和输入寄存器来传递参数和结果。</p>
 <p>需要注意的是，由于不同的CPU架构和编译器可能有不同的约束和限制，因此在编写内联汇编代码时，需要遵循相应的规范和文档，并进行适当的测试和调试。</p>
-<p>调用JNI函数<br>接下来，在Java层中调用刚才编写的JNI函数。例如，在<code>MainActivity.java</code>文件中添加以下代码：</p>
+<h5 id="调用JNI函数"><a href="#调用JNI函数" class="headerlink" title="调用JNI函数"></a>调用JNI函数</h5><p>接下来，在Java层中调用刚才编写的JNI函数。例如，在<code>MainActivity.java</code>文件中添加以下代码：</p>
 <pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">MainActivity</span> <span class="token keyword">extends</span> <span class="token class-name">AppCompatActivity</span> <span class="token punctuation">&#123;</span>
     <span class="token keyword">static</span> <span class="token punctuation">&#123;</span>
         <span class="token class-name">System</span><span class="token punctuation">.</span><span class="token function">loadLibrary</span><span class="token punctuation">(</span><span class="token string">"native-lib"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -180,7 +185,7 @@ Java_com_example_myapplication_MainActivity_add(JNIEnv* env, jobject &#x2F;* thi
         <blockquote class="mdui-m-x-0 mdui-m-t-4">
     <strong>
         Author: <a href="/about/">Z Chan</a><br>
-        URL: <a href="https://zchancode.github.io/2023/06/17/0x11_android/">https://zchancode.github.io/2023/06/17/0x11_android/</a><br>
+        URL: <a href="https://zchancode.github.io/2023/06/17/0x12_android/">https://zchancode.github.io/2023/06/17/0x12_android/</a><br>
         
             This work is licensed under a <a rel="license noopener" target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> .
         

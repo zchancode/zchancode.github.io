@@ -121,16 +121,16 @@
     
     <div class="mdui-card-primary mdui-ripple">
     <div class="mdui-card-primary-title">
-        <a role="heading" aria-level="1" class="mdui-text-color-theme-text" href="/2023/06/17/0x11_android/">Android NDK使用内联汇编</a>
+        <a role="heading" aria-level="1" class="mdui-text-color-theme-text" href="/2023/06/17/0x12_android/">Android NDK使用内联汇编</a>
         
         <small> <a class="mdui-text-color-theme-text category-link" href="/categories/NDK/">NDK</a></small>
         
     </div>
     <div class="mdui-card-primary-subtitle mdui-typo">
         
-        <span mdui-tooltip="{content:'Created: 2023-06-17 10:38<br>Updated: 2023-07-04 03:44'}">2023-06-17 -</span>
+        <span mdui-tooltip="{content:'Created: 2023-06-17 10:38<br>Updated: 2023-07-04 03:49'}">2023-06-17 -</span>
         
-            <span>2023/06/17/0x11_android/</span>
+            <span>2023/06/17/0x12_android/</span>
         
     </div>
 </div>
@@ -139,51 +139,9 @@
     <div class="mdui-divider"></div>
     <div class="mdui-card-content mdui-typo">
         
-        <p>Android NDK提供了许多与硬件相关的C&#x2F;C++库和工具，使得我们可以更好地利用底层系统资源来优化应用程序性能。其中，内联汇编（Inline Assembly）是一种将汇编代码嵌入到C&#x2F;C++代码中的技术，可以实现更高效的计算和更精细的控制。本文将介绍如何在Android NDK中使用内联汇编，并通过一个简单的示例说明其使用方法和效果。</p>
-<p>准备工作<br>在开始之前，您需要准备以下工具和资源：</p>
-<p>安装Android Studio及NDK插件；<br>创建一个新的Android项目，并配置NDK编译环境。<br>编写JNI代码<br>首先，在项目的src&#x2F;main目录下创建一个名为jni的子目录，并在该目录下创建一个名为native-lib.cpp的文件。然后，编写以下代码：</p>
-<pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">#include &lt;jni.h&gt;
-
-extern &quot;C&quot; JNIEXPORT jint JNICALL
-Java_com_example_myapplication_MainActivity_add(JNIEnv* env, jobject &#x2F;* this *&#x2F;, jint a, jint b) &#123;
-    int result;
-    __asm__ (&quot;add %0, %1, %2&quot; : &quot;&#x3D;r&quot; (result) : &quot;r&quot; (a), &quot;r&quot; (b));
-    return result;
-&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>我说一下内联代码的格式：<br>    %0是0号寄存器，是不是比eax好写多了，不用担心寄存器不够，其实这只是用来存数据的，你可以理解为寄存器，实际上比这复杂的多<br>    <code>=r</code>意思是输出标记<br>    <code>r</code>这是输入标记<br>    输入<code>ab</code>输出<code>result</code></p>
-<p>在这个示例代码中，我们使用了<code>__asm__</code>关键字来告诉编译器接下来的代码是汇编指令。然后，我们使用了add汇编指令来计算两个整数的和，并使用输出和输入寄存器来传递参数和结果。</p>
-<p>需要注意的是，由于不同的CPU架构和编译器可能有不同的约束和限制，因此在编写内联汇编代码时，需要遵循相应的规范和文档，并进行适当的测试和调试。</p>
-<p>调用JNI函数<br>接下来，在Java层中调用刚才编写的JNI函数。例如，在<code>MainActivity.java</code>文件中添加以下代码：</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">MainActivity</span> <span class="token keyword">extends</span> <span class="token class-name">AppCompatActivity</span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">static</span> <span class="token punctuation">&#123;</span>
-        <span class="token class-name">System</span><span class="token punctuation">.</span><span class="token function">loadLibrary</span><span class="token punctuation">(</span><span class="token string">"native-lib"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-
-    <span class="token annotation punctuation">@Override</span>
-    <span class="token keyword">protected</span> <span class="token keyword">void</span> <span class="token function">onCreate</span><span class="token punctuation">(</span><span class="token class-name">Bundle</span> savedInstanceState<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">super</span><span class="token punctuation">.</span><span class="token function">onCreate</span><span class="token punctuation">(</span>savedInstanceState<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token function">setContentView</span><span class="token punctuation">(</span><span class="token class-name">R</span><span class="token punctuation">.</span>layout<span class="token punctuation">.</span>activity_main<span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-        <span class="token class-name">TextView</span> tv <span class="token operator">=</span> <span class="token function">findViewById</span><span class="token punctuation">(</span><span class="token class-name">R</span><span class="token punctuation">.</span>id<span class="token punctuation">.</span>sample_text<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">int</span> a <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">,</span> b <span class="token operator">=</span> <span class="token number">2</span><span class="token punctuation">;</span>
-        <span class="token keyword">int</span> c <span class="token operator">=</span> <span class="token function">add</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> b<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        tv<span class="token punctuation">.</span><span class="token function">setText</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">.</span><span class="token function">format</span><span class="token punctuation">(</span><span class="token string">"%d + %d = %d"</span><span class="token punctuation">,</span> a<span class="token punctuation">,</span> b<span class="token punctuation">,</span> c<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-
-    <span class="token keyword">public</span> <span class="token keyword">native</span> <span class="token keyword">int</span> <span class="token function">add</span><span class="token punctuation">(</span><span class="token keyword">int</span> a<span class="token punctuation">,</span> <span class="token keyword">int</span> b<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>在这个示例代码中，我们使用<code>System.loadLibrary()</code>函数加载之前创建的<code>native-lib</code>库，并在<code>onCreate()</code>方法中调用<code>add()</code>函数来触发JNI代码的执行。然后，我们将返回的结果显示在UI界面上。</p>
-
-        
-        <blockquote class="mdui-m-x-0 mdui-m-t-4">
-    <strong>
-        Author: <a href="/about/">Z Chan</a><br>
-        URL: <a href="https://zchancode.github.io/2023/06/17/0x11_android/">https://zchancode.github.io/2023/06/17/0x11_android/</a><br>
-        
-            This work is licensed under a <a rel="license noopener" target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> .
-        
-    </strong>
-</blockquote>
+            <p>Android NDK提供了许多与硬件相关的C&#x2F;C++库和工具，使得我们可以更好地利用底层系统资源来优化应用程序性能。其中，内联汇编（Inline Assembly）是一种将汇编代码嵌入到C&#x2F;C++代码中的技术，可以实现更高效的计算和更精细的控制。本文将介绍如何在Android NDK中使用内联汇编，并通过一个简单的示例说明其使用方法和效果。</p>
+            
+            <a class="mdui-btn mdui-btn-block mdui-ripple" href="/2023/06/17/0x12_android/">Read more</a>
         
     </div>
     
