@@ -318,7 +318,7 @@
     </div>
     <div class="mdui-card-primary-subtitle mdui-typo">
         
-        <span mdui-tooltip="{content:'Created: 2023-04-17 10:38<br>Updated: 2023-07-04 03:33'}">2023-04-17 -</span>
+        <span mdui-tooltip="{content:'Created: 2023-04-17 10:38<br>Updated: 2023-07-04 03:37'}">2023-04-17 -</span>
         
             <span>2023/04/17/0x11_android/</span>
         
@@ -331,7 +331,7 @@
         
         <h5 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h5><p>OpenCV for Android SDK with ffmpeg<br>和对应头文件</p>
 <h5 id="导入OpenCV库"><a href="#导入OpenCV库" class="headerlink" title="导入OpenCV库"></a>导入OpenCV库</h5><p>首先，我们需要将OpenCV库文件复制到Android项目的jniLibs目录中。在解压OpenCV for Android SDK后，您可以找到各个CPU架构下的库文件（以armeabi-v7a为例）：<br><img src="/images/android03.png"></p>
-<p>将这两个库文件复制到Android项目的jniLibs目录下（如果没有此目录，请手动创建）。然后，在项目的build.gradle文件中添加以下代码：</p>
+<p>先把头文件复制到cpp&#x2F;include文件夹里面<br>将这两个库文件复制到Android项目的jniLibs目录下（如果没有此目录，请手动创建）。然后，在项目的build.gradle文件中添加以下代码：</p>
 <pre class="line-numbers language-java" data-language="java"><code class="language-java">android <span class="token punctuation">&#123;</span>
     defaultConfig <span class="token punctuation">&#123;</span>
         ndk <span class="token punctuation">&#123;</span>
